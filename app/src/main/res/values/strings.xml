@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">IssueTracker</string>
+    <string name="generic_error">Something wrong happened. Please try again.</string>
+
+    <string name="email_error">Please insert a valid email.</string>
+    <string name="password_error">Your password should have at least eight digits and include one digit, one lower case letter, one upper case letter and one special character.</string>
+
     <!-- LoginScreen -->
 
     <string name="email">Email</string>
