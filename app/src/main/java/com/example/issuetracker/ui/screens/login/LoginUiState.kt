@@ -1,6 +1,6 @@
 package com.example.issuetracker.ui.screens.login
 
-class LoginUiState {
-    var email = ""
-    var password = ""
+data class LoginUiState(var email: String = "",
+                        var password: String = "") {
+
 }
