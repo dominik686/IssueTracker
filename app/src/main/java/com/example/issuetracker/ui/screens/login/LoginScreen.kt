@@ -39,7 +39,9 @@ fun LoginScreen(openAndPopUp: (String, String) -> Unit,
 
            EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
            PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
-           BasicButton(text = R.string.sign_in,modifier= Modifier.basicButtonModifier().fillMaxWidth()){}
-           TextButton(text = R.string.forgot_password,modifier= Modifier.textButtonModifier()) {}
-    }
+           BasicButton(text = R.string.sign_in,modifier= Modifier.basicButtonModifier().fillMaxWidth()){viewModel.onSignInPressed()}
+           TextButton(text = R.string.forgot_password,modifier= Modifier.textButtonModifier()) {viewModel.onForgotPasswordPressed()}
+           TextButton(text = R.string.create_new_account,modifier= Modifier.textButtonModifier()) {viewModel.onCreateNewAccountPressed()}
+
+       }
 }
