@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import com.example.issuetracker.IssueTrackerViewModel
+import com.example.issuetracker.SIGN_UP_SCREEN
 import com.example.issuetracker.common.extensions.isValidEmail
 import com.example.issuetracker.common.extensions.isValidPassword
 import com.example.issuetracker.common.snackbar.SnackbarManager
@@ -14,7 +15,7 @@ import javax.inject.Inject
 import com.example.issuetracker.R.string as AppText
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(var accountService: AccountService)
+class LoginViewModel @Inject constructor(private var accountService: AccountService)
     : IssueTrackerViewModel()
 {
     var uiState = mutableStateOf(LoginUiState())
@@ -62,8 +63,8 @@ class LoginViewModel @Inject constructor(var accountService: AccountService)
       //  TODO("Not yet implemented")
     }
 
-    fun onCreateNewAccountPressed() {
-//        TODO("Not yet implemented")
+    fun onCreateNewAccountPressed(navigate: (String) -> Unit) {
+        navigate(SIGN_UP_SCREEN)
     }
 
 

@@ -20,6 +20,7 @@ import com.example.issuetracker.common.extensions.textButtonModifier
 
 @Composable
 fun LoginScreen(openAndPopUp: (String, String) -> Unit,
+                navigate: (String) -> Unit,
                 modifier: Modifier = Modifier,
                 viewModel: LoginViewModel = hiltViewModel())
 {
@@ -40,6 +41,6 @@ fun LoginScreen(openAndPopUp: (String, String) -> Unit,
            PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
            BasicButton(text = R.string.sign_in,modifier= Modifier.basicButtonModifier().fillMaxWidth()){viewModel.onSignInPressed()}
            TextButton(text = R.string.forgot_password,modifier= Modifier.textButtonModifier()) {viewModel.onForgotPasswordPressed()}
-           TextButton(text = R.string.sign_up,modifier= Modifier.textButtonModifier()) {viewModel.onCreateNewAccountPressed()}
+           TextButton(text = R.string.not_registered,modifier= Modifier.textButtonModifier()) {viewModel.onCreateNewAccountPressed(navigate = navigate)}
        }
 }
