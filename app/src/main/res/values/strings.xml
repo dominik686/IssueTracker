@@ -12,5 +12,5 @@
     <string name="repeat_password">Repeat password</string>
     <string name="sign_in">Sign in</string>
     <string name="forgot_password">Forgot password? Click to get recovery email</string>
-    <string name="create_new_account">Not registered? Click to create new account</string>
+    <string name="sign_up">Not registered? Click to sign up</string>
 </resources>

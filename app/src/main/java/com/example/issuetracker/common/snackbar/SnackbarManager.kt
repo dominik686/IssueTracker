@@ -1,22 +1,21 @@
 package com.example.issuetracker.common.snackbar
 
 import androidx.annotation.StringRes
-import androidx.compose.runtime.MutableState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 object SnackbarManager{
-    private val messages: MutableStateFlow<SnackbarMessage?> = MutableStateFlow(null)
-    private val snackbarMessage: StateFlow<SnackbarMessage?> get() = messages.asStateFlow()
+    private val message: MutableStateFlow<SnackbarMessage?> = MutableStateFlow(null)
+    val snackbarMessage: StateFlow<SnackbarMessage?> get() = message.asStateFlow()
 
-    fun showMessage(@StringRes message: Int)
+    fun showMessage(@StringRes messageResource: Int)
     {
-        messages.value = SnackbarMessage.ResourceSnackbar(message)
+        message.value = SnackbarMessage.ResourceSnackbar(messageResource)
     }
 
-    fun showMessage(message: SnackbarMessage)
+    fun showMessage(messageSnackBar: SnackbarMessage)
     {
-        messages.value = message
+        message.value = messageSnackBar
     }
 }

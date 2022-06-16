@@ -15,7 +15,6 @@ import com.example.issuetracker.common.composables.EmailField
 import com.example.issuetracker.common.composables.PasswordField
 import com.example.issuetracker.common.extensions.basicButtonModifier
 import com.example.issuetracker.common.extensions.fieldModifier
-import com.example.issuetracker.common.extensions.spacer
 import com.example.issuetracker.common.extensions.textButtonModifier
 
 
@@ -41,7 +40,6 @@ fun LoginScreen(openAndPopUp: (String, String) -> Unit,
            PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
            BasicButton(text = R.string.sign_in,modifier= Modifier.basicButtonModifier().fillMaxWidth()){viewModel.onSignInPressed()}
            TextButton(text = R.string.forgot_password,modifier= Modifier.textButtonModifier()) {viewModel.onForgotPasswordPressed()}
-           TextButton(text = R.string.create_new_account,modifier= Modifier.textButtonModifier()) {viewModel.onCreateNewAccountPressed()}
-
+           TextButton(text = R.string.sign_up,modifier= Modifier.textButtonModifier()) {viewModel.onCreateNewAccountPressed()}
        }
 }

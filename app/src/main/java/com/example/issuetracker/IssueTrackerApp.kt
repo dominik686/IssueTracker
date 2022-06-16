@@ -1,20 +1,25 @@
 package com.example.issuetracker
 
+import android.content.res.Resources
+import android.util.Log
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.ui.screens.login.LoginScreen
 import com.example.issuetracker.ui.theme.IssueTrackerTheme
+import kotlinx.coroutines.CoroutineScope
 
 @ExperimentalMaterialApi
 @Composable
@@ -25,7 +30,11 @@ fun IssueTrackerApp()
         Surface(color = MaterialTheme.colors.background) {
             val appState = rememberAppState()
             
-            Scaffold() {
+            Scaffold(snackbarHost={
+                SnackbarHost(hostState = it, modifier = Modifier.padding(), snackbar = {
+                        snackbarData ->
+                    Snackbar(snackbarData, contentColor = MaterialTheme.colors.onPrimary)  })
+            }, scaffoldState = appState.scaffoldState) {
                 NavHost(navController = appState.navHostController, startDestination = LOGIN_SCREEN,
                 modifier = Modifier.padding(it)){
                     this.issueTrackerGraph(appState)
@@ -40,14 +49,25 @@ fun IssueTrackerApp()
 @Composable
 fun rememberAppState(
     navHostController: NavHostController = rememberNavController(),
-) = remember(
-    navHostController,
+    snackbarManager: SnackbarManager = SnackbarManager,
+    resources: Resources = resources(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    scaffoldState: ScaffoldState = rememberScaffoldState()
+
+    ) = remember(
+    navHostController, snackbarManager, resources, coroutineScope, scaffoldState
   )
 {
-    IssueTrackerAppState(navHostController)
+    IssueTrackerAppState(navHostController, snackbarManager, resources, coroutineScope, scaffoldState)
 }
 
-
+@Composable
+@ReadOnlyComposable
+fun resources(): Resources
+{
+    LocalConfiguration.current
+    return LocalContext.current.resources
+}
 @ExperimentalMaterialApi
 fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
 {
