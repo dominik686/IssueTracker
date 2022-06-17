@@ -32,15 +32,19 @@ class IssueTrackerAppState(
      navHostController.popBackStack()
     }
 
+    fun popUpTo(route: String)
+    {
+        navHostController.popBackStack(route = route, inclusive = false, saveState = false)
+    }
     fun navigate(route: String)
     {
       navHostController.navigate(route){ launchSingleTop = true }
     }
-    fun navigateAndPopUp(route: String, popUp: String)
+    fun navigateAndPopUp(route: String, popUpTo: String)
     {
         navHostController.navigate(route){
             launchSingleTop = true
-            popUpTo(popUp){inclusive = true}
+            popUpTo(popUpTo){inclusive = true}
         }
     }
     fun clearAndNavigate(route: String)

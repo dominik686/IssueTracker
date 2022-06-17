@@ -36,13 +36,13 @@ class LoginViewModel @Inject constructor(private var accountService: AccountServ
         if(!email.isValidEmail()){
             SnackbarManager.showMessage(AppText.email_error)
             Log.d("LoginScreen", "Invalid email")
-
+            return
         }
         if(!password.isValidPassword())
         {
           //  SnackbarManager.showMessage(AppText.password_error)
             Log.d("LoginScreen", "Invalid password")
-
+            return
         }
         else
         {

@@ -17,7 +17,7 @@ import com.example.issuetracker.common.extensions.fieldModifier
 import com.example.issuetracker.R.string as AppText
 
 @Composable
-fun SignUpScreen(popBack: () -> Unit,
+fun SignUpScreen(navigateAndPopUpTo: (String, String) -> Unit,
                 modifier: Modifier = Modifier,
                 viewModel: SignUpViewModel = hiltViewModel()
 )
@@ -40,6 +40,6 @@ fun SignUpScreen(popBack: () -> Unit,
         RepeatPasswordField(value =uiState.repeatedPassword , onNewValue ={viewModel.onRepeatPasswordChange(it)}, modifier= Modifier.fieldModifier() )
         BasicButton(text = AppText.sign_up, modifier= Modifier
             .basicButtonModifier()
-            .fillMaxWidth()){viewModel.onSignUpPressed()}
+            .fillMaxWidth()){viewModel.onSignUpPressed(navigateAndPopUpTo)}
     }
 }

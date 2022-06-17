@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.ui.screens.login.LoginScreen
 import com.example.issuetracker.ui.screens.signup.SignUpScreen
+import com.example.issuetracker.ui.screens.success.SuccessScreen
 import com.example.issuetracker.ui.theme.IssueTrackerTheme
 import kotlinx.coroutines.CoroutineScope
 
@@ -76,6 +77,9 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
          LoginScreen(openAndPopUp = {route, popUp -> appState.navigateAndPopUp(route, popUp)}, navigate = {route -> appState.navigate(route)})
      }
     composable(SIGN_UP_SCREEN){
-        SignUpScreen(popBack = { appState.popUp() })
+        SignUpScreen(navigateAndPopUpTo = {route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    }
+    composable(SUCCESSFUL_ACCOUNT_CREATION_SCREEN){
+        SuccessScreen(successMessage = R.string.sign_up_successful, popUpTo = {route -> appState.popUpTo(route)})
     }
 }
