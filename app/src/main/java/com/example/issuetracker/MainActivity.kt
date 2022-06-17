@@ -3,6 +3,7 @@ package com.example.issuetracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.issuetracker.ui.theme.IssueTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
