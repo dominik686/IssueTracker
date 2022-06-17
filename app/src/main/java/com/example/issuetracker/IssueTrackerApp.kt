@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.issuetracker.common.animation.TransitionAnimations
 import com.google.accompanist.navigation.animation.navigation
 import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.ui.screens.login.LoginScreen
@@ -83,35 +84,17 @@ fun resources(): Resources
 fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
 {
      composable(route = LOGIN_SCREEN, exitTransition = {
-         slideOutHorizontally(targetOffsetX = {-300},
-         animationSpec = tween(durationMillis = 300,
-         easing = FastOutSlowInEasing)) + fadeOut(animationSpec = tween(300))
-                                                       },
-     popEnterTransition = { slideInHorizontally(initialOffsetX = {300},
-         animationSpec = tween(durationMillis = 300,
-             easing = FastOutSlowInEasing)) + fadeIn(animationSpec = tween(durationMillis = 300))}){
+         TransitionAnimations.defaultExitTransition },
+     popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
          LoginScreen(openAndPopUp = {route, popUp -> appState.navigateAndPopUp(route, popUp)}, navigate = {route -> appState.navigate(route)})
      }
-    composable(SIGN_UP_SCREEN, enterTransition   = {
-        slideInHorizontally(initialOffsetX = {300},
-            animationSpec = tween(durationMillis = 300,
-                easing = FastOutSlowInEasing)) + fadeIn(animationSpec = tween(300))
-    },
-        popExitTransition = { slideOutHorizontally(targetOffsetX = {-300},
-            animationSpec = tween(durationMillis = 300,
-                easing = FastOutSlowInEasing)) + fadeOut(animationSpec = tween(durationMillis = 300))}){
+    composable(SIGN_UP_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition}){
         SignUpScreen(navigateAndPopUpTo = {route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
-    composable(SUCCESSFUL_ACCOUNT_CREATION_SCREEN,
-        enterTransition   = {
-        slideInHorizontally(initialOffsetX = {300},
-            animationSpec = tween(durationMillis = 300,
-                easing = FastOutSlowInEasing)) + fadeIn(animationSpec = tween(300))
-    },
-        popExitTransition = {
-            slideOutHorizontally(targetOffsetX = {-300},
-            animationSpec = tween(durationMillis = 300,
-                easing = FastOutSlowInEasing)) + fadeOut(animationSpec = tween(durationMillis = 300))} ){
+    composable(SUCCESSFUL_ACCOUNT_CREATION_SCREEN,popEnterTransition = {TransitionAnimations.defaultPopEnterAnimation},
+        enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = {TransitionAnimations.defaultPopExitTransition} ){
         SuccessScreen(successMessage = R.string.sign_up_successful, popUpTo = {route -> appState.popUpTo(route)})
     }
 }
