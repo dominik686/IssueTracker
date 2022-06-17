@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.issuetracker.common.composables.*
+import com.example.issuetracker.common.extensions.bannerModifier
 import com.example.issuetracker.common.extensions.basicButtonModifier
 import com.example.issuetracker.common.extensions.fieldModifier
 import com.example.issuetracker.R.string as AppText
@@ -35,6 +36,7 @@ fun SignUpScreen(navigateAndPopUpTo: (String, String) -> Unit,
     )
     {
 
+        Banner(modifier = Modifier.bannerModifier())
         EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
         PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
         RepeatPasswordField(value =uiState.repeatedPassword , onNewValue ={viewModel.onRepeatPasswordChange(it)}, modifier= Modifier.fieldModifier() )

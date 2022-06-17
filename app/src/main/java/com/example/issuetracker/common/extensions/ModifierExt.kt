@@ -16,6 +16,10 @@ fun Modifier.basicButtonModifier(): Modifier {
 fun Modifier.fieldModifier(): Modifier {
     return this.fillMaxWidth().padding(16.dp, 4.dp)
 }
+
+fun Modifier.bannerModifier(): Modifier{
+    return this.padding(16.dp, 16.dp)
+}
 fun Modifier.spacer(): Modifier {
     return this.fillMaxWidth().padding(12.dp)
 }

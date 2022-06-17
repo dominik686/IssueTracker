@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -26,7 +27,7 @@ import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.R.string as AppText
 
 @Composable
-fun SuccessScreen(popUpTo: (String) -> Unit, @StringRes successMessage : Int)
+fun SuccessScreen(popUpTo: (String) -> Unit, @StringRes successMessage : Int, viewModel: SuccessViewModel = hiltViewModel())
 {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center ) {
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.success_animation))
@@ -34,6 +35,7 @@ fun SuccessScreen(popUpTo: (String) -> Unit, @StringRes successMessage : Int)
         if(progress.equals(1F))
         {
             popUpTo(LOGIN_SCREEN)
+            viewModel.onAnimationFinish(popUpTo)
         }
        // Text(text = stringResource(successMessage), style = MaterialTheme.typography.h5)
         LottieAnimation(composition = composition, progress = {progress})

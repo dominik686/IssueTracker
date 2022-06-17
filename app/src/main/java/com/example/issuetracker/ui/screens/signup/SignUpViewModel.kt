@@ -26,8 +26,6 @@ class SignUpViewModel @Inject constructor(private var accountService: AccountSer
     }
 
     fun onSignUpPressed(navigateAndPopUpTo: (String, String) -> Unit) {
-        //Remove this later
-        navigateAndPopUpTo(SUCCESSFUL_ACCOUNT_CREATION_SCREEN, SIGN_UP_SCREEN)
 
         val email = uiState.value.email.trim()
         val password = uiState.value.password
