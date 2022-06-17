@@ -6,13 +6,17 @@ import com.example.issuetracker.*
 import com.example.issuetracker.common.extensions.isValidEmail
 import com.example.issuetracker.common.extensions.isValidPassword
 import com.example.issuetracker.common.snackbar.SnackbarManager
-import com.example.issuetracker.model.service.interfaces.AccountService
+import com.example.issuetracker.model.service.AccountService
+import com.example.issuetracker.model.service.LogService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.issuetracker.R.string as AppText
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private var accountService: AccountService):  IssueTrackerViewModel()
+class SignUpViewModel @Inject constructor(
+    private var accountService: AccountService,
+    private var logService: LogService
+):  IssueTrackerViewModel()
 {
     var uiState = mutableStateOf(SignUpUiState())
 
@@ -62,6 +66,7 @@ class SignUpViewModel @Inject constructor(private var accountService: AccountSer
                 }
                 else {
                     Log.d("Firebase", "Account creation NOT successful")
+                    logService.logNonFatalException(it)
                 }
             }
         }    }

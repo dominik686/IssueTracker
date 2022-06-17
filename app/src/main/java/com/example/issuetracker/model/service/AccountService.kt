@@ -1,4 +1,4 @@
-package com.example.issuetracker.model.service.interfaces
+package com.example.issuetracker.model.service
 
 interface AccountService
 {

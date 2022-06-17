@@ -1,6 +1,6 @@
 package com.example.issuetracker.model.service.impl
 
-import com.example.issuetracker.model.service.interfaces.AccountService
+import com.example.issuetracker.model.service.AccountService
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject

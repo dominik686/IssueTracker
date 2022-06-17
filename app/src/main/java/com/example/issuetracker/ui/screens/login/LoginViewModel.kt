@@ -1,23 +1,23 @@
 package com.example.issuetracker.ui.screens.login
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import com.example.issuetracker.IssueTrackerViewModel
-import com.example.issuetracker.LOGIN_SCREEN
 import com.example.issuetracker.PROJECT_LIST_SCREEN
 import com.example.issuetracker.SIGN_UP_SCREEN
 import com.example.issuetracker.common.extensions.isValidEmail
 import com.example.issuetracker.common.extensions.isValidPassword
 import com.example.issuetracker.common.snackbar.SnackbarManager
-import com.example.issuetracker.common.snackbar.SnackbarMessage
-import com.example.issuetracker.model.service.interfaces.AccountService
+import com.example.issuetracker.model.service.AccountService
+import com.example.issuetracker.model.service.LogService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.issuetracker.R.string as AppText
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private var accountService: AccountService)
+class LoginViewModel @Inject constructor(
+    private var accountService: AccountService,
+    private var logService: LogService)
     : IssueTrackerViewModel()
 {
     var uiState = mutableStateOf(LoginUiState())
@@ -57,6 +57,7 @@ class LoginViewModel @Inject constructor(private var accountService: AccountServ
                 else {
                     Log.d("Firebase", "Login in NOT successful")
                     // Shake the fields and tell the user their credentials are incorrect
+                    logService.logNonFatalException(it)
                 }
             }
         }
