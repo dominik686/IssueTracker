@@ -23,6 +23,7 @@ import com.example.issuetracker.common.animation.TransitionAnimations
 import com.google.accompanist.navigation.animation.navigation
 import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.ui.screens.login.LoginScreen
+import com.example.issuetracker.ui.screens.project_list.ProjectListScreen
 import com.example.issuetracker.ui.screens.signup.SignUpScreen
 import com.example.issuetracker.ui.screens.success.SuccessScreen
 import com.example.issuetracker.ui.theme.IssueTrackerTheme
@@ -86,7 +87,7 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
      composable(route = LOGIN_SCREEN, exitTransition = {
          TransitionAnimations.defaultExitTransition },
      popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
-         LoginScreen(openAndPopUp = {route, popUp -> appState.navigateAndPopUp(route, popUp)}, navigate = {route -> appState.navigate(route)})
+         LoginScreen(navigate = {route -> appState.navigate(route)})
      }
     composable(SIGN_UP_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
         popExitTransition = { TransitionAnimations.defaultPopExitTransition}){
@@ -96,5 +97,10 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
         enterTransition   = {TransitionAnimations.defaultEnterTransition },
         popExitTransition = {TransitionAnimations.defaultPopExitTransition} ){
         SuccessScreen(successMessage = R.string.sign_up_successful, popUpTo = {route -> appState.popUpTo(route)})
+    }
+    composable(PROJECT_LIST_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = {TransitionAnimations.defaultPopExitTransition})
+    {
+        ProjectListScreen()
     }
 }

@@ -34,7 +34,6 @@ fun SuccessScreen(popUpTo: (String) -> Unit, @StringRes successMessage : Int, vi
         val progress  by animateLottieCompositionAsState(composition = composition)
         if(progress.equals(1F))
         {
-            popUpTo(LOGIN_SCREEN)
             viewModel.onAnimationFinish(popUpTo)
         }
        // Text(text = stringResource(successMessage), style = MaterialTheme.typography.h5)

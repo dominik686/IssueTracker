@@ -4,6 +4,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import com.example.issuetracker.IssueTrackerViewModel
+import com.example.issuetracker.LOGIN_SCREEN
+import com.example.issuetracker.PROJECT_LIST_SCREEN
 import com.example.issuetracker.SIGN_UP_SCREEN
 import com.example.issuetracker.common.extensions.isValidEmail
 import com.example.issuetracker.common.extensions.isValidPassword
@@ -29,7 +31,7 @@ class LoginViewModel @Inject constructor(private var accountService: AccountServ
 
     }
 
-    fun onSignInPressed() {
+    fun onSignInPressed(navigate: (String) -> Unit) {
         val email = uiState.value.email.trim()
         val password = uiState.value.password
 
@@ -50,11 +52,11 @@ class LoginViewModel @Inject constructor(private var accountService: AccountServ
                 if(it == null)
                 {
                     Log.d("Firebase", "Login in successful")
-                    SnackbarManager.showMessage(AppText.email_error)
-
+                    navigate(PROJECT_LIST_SCREEN)
                 }
                 else {
                     Log.d("Firebase", "Login in NOT successful")
+                    // Shake the fields and tell the user their credentials are incorrect
                 }
             }
         }

@@ -39,7 +39,7 @@ fun SignUpScreen(navigateAndPopUpTo: (String, String) -> Unit,
         Banner(modifier = Modifier.bannerModifier())
         EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
         PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
-        RepeatPasswordField(value =uiState.repeatedPassword , onNewValue ={viewModel.onRepeatPasswordChange(it)}, modifier= Modifier.fieldModifier() )
+        RepeatPasswordField(value = uiState.repeatedPassword , onNewValue ={viewModel.onRepeatPasswordChange(it)}, modifier= Modifier.fieldModifier() )
         BasicButton(text = AppText.sign_up, modifier= Modifier
             .basicButtonModifier()
             .fillMaxWidth()){viewModel.onSignUpPressed(navigateAndPopUpTo)}
