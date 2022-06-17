@@ -30,7 +30,7 @@ class LoginViewModel @Inject constructor(private var accountService: AccountServ
     }
 
     fun onSignInPressed() {
-        val email = uiState.value.email
+        val email = uiState.value.email.trim()
         val password = uiState.value.password
 
         if(!email.isValidEmail()){
@@ -50,6 +50,8 @@ class LoginViewModel @Inject constructor(private var accountService: AccountServ
                 if(it == null)
                 {
                     Log.d("Firebase", "Login in successful")
+                    SnackbarManager.showMessage(AppText.email_error)
+
                 }
                 else {
                     Log.d("Firebase", "Login in NOT successful")

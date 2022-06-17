@@ -1,13 +1,16 @@
 package com.example.issuetracker.common.extensions
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import java.util.regex.Pattern
 
 private const val MIN_PASSWORD_LENGTH = 8
 private const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
 
 fun String.isValidEmail() : Boolean{
-    return this.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    return this.isNotBlank()
+            &&
+            PatternsCompat.EMAIL_ADDRESS.matcher(this)
+                .matches()
 }
 
 fun String.isValidPassword(): Boolean{

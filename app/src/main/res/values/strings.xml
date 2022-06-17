@@ -9,11 +9,15 @@
 
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="repeat_password">Repeat password</string>
     <string name="sign_in">Sign in</string>
     <string name="forgot_password">Forgot password? Click to get recovery email</string>
     <string name="not_registered">Not registered? Click to sign up</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="login_unsuccessful">Login Unsuccessful</string>
 
-    <!-- LoginScreen -->
+    <!-- SignUp SCreen -->
 <string name="sign_up">Sign up</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="repeat_password_error">Your password should have at least eight digits and include one digit, one lower case letter, one upper case letter and one special character.</string>
+
 </resources>

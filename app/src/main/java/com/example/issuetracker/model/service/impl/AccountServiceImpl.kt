@@ -11,4 +11,14 @@ class AccountServiceImpl @Inject constructor(): AccountService {
             onResult(it.exception)
         }
     }
+
+    override fun createUserWithEmailAndPassword(
+        email: String,
+        password: String,
+        onResult: (Throwable?) -> Unit
+    ) {
+        Firebase.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{
+            onResult(it.exception)
+        }
+    }
 }

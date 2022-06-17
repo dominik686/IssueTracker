@@ -58,7 +58,7 @@ fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifie
 
 @Composable
 fun RepeatPasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    PasswordField(value, R.string.password, onNewValue, modifier)
+    PasswordField(value, R.string.repeat_password, onNewValue, modifier)
 }
 
 

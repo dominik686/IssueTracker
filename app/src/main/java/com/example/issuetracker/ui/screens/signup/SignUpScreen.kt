@@ -11,18 +11,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.issuetracker.R
 import com.example.issuetracker.common.composables.*
 import com.example.issuetracker.common.extensions.basicButtonModifier
 import com.example.issuetracker.common.extensions.fieldModifier
-import com.example.issuetracker.common.extensions.textButtonModifier
-import com.example.issuetracker.ui.screens.login.LoginViewModel
 import com.example.issuetracker.R.string as AppText
 
 @Composable
 fun SignUpScreen(popBack: () -> Unit,
                 modifier: Modifier = Modifier,
-                viewModel: SignupViewModel = hiltViewModel()
+                viewModel: SignUpViewModel = hiltViewModel()
 )
 {
     val uiState by viewModel.uiState
@@ -40,8 +37,8 @@ fun SignUpScreen(popBack: () -> Unit,
 
         EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
         PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
-      //  RepeatPasswordField(value = , onNewValue = )
-        BasicButton(text = AppText.sign_up,modifier= Modifier
+        RepeatPasswordField(value =uiState.repeatedPassword , onNewValue ={viewModel.onRepeatPasswordChange(it)}, modifier= Modifier.fieldModifier() )
+        BasicButton(text = AppText.sign_up, modifier= Modifier
             .basicButtonModifier()
             .fillMaxWidth()){viewModel.onSignUpPressed()}
     }
