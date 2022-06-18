@@ -48,8 +48,8 @@ class LoginViewModel @Inject constructor(
         }
         else
         {
-            accountService.authenticate(uiState.value.email, uiState.value.password) {
-                if(it == null)
+            accountService.authenticate(uiState.value.email, uiState.value.password) { exception ->
+                if(exception == null)
                 {
                     Log.d("Firebase", "Login in successful")
                     navigate(PROJECT_LIST_SCREEN)
@@ -57,7 +57,7 @@ class LoginViewModel @Inject constructor(
                 else {
                     Log.d("Firebase", "Login in NOT successful")
                     // Shake the fields and tell the user their credentials are incorrect
-                    logService.logNonFatalException(it)
+                    logService.logNonFatalException(exception)
                 }
             }
         }

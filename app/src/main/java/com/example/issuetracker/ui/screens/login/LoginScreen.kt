@@ -25,6 +25,7 @@ fun LoginScreen(navigate: (String) -> Unit,
 
 
 
+    BasicToolbar(title = R.string.sign_in)
     Column(modifier = modifier
         .fillMaxWidth()
         .fillMaxHeight()

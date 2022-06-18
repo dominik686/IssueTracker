@@ -75,5 +75,9 @@ class SignUpViewModel @Inject constructor(
         uiState.value = uiState.value.copy(repeatedPassword = repeatedPassword )
     }
 
+    fun onBackArrowPressed(popUp: () -> Unit) {
+        popUp()
+    }
+
 
 }

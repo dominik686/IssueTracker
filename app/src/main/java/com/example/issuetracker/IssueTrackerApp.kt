@@ -91,7 +91,7 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
      }
     composable(SIGN_UP_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
         popExitTransition = { TransitionAnimations.defaultPopExitTransition}){
-        SignUpScreen(navigateAndPopUpTo = {route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        SignUpScreen(popUp = {appState.popUp()}, navigateAndPopUpTo = {route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
     composable(SUCCESSFUL_ACCOUNT_CREATION_SCREEN,popEnterTransition = {TransitionAnimations.defaultPopEnterAnimation},
         enterTransition   = {TransitionAnimations.defaultEnterTransition },
