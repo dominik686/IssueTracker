@@ -9,4 +9,8 @@ import javax.inject.Inject
 class ProjectListViewModel @Inject constructor(): IssueTrackerViewModel()
 {
     val uiState = mutableStateOf(ProjectListUiState())
+    fun onBackArrowPressed(popUp: () -> Unit) {
+        popUp()
+    }
+
 }

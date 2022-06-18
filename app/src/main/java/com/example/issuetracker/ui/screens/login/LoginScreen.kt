@@ -24,8 +24,8 @@ fun LoginScreen(navigate: (String) -> Unit,
     val uiState by viewModel.uiState
 
 
-
     BasicToolbar(title = R.string.sign_in)
+
     Column(modifier = modifier
         .fillMaxWidth()
         .fillMaxHeight()

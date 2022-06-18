@@ -27,3 +27,7 @@ fun Modifier.spacer(): Modifier {
 fun Modifier.smallSpacer(): Modifier {
     return this.fillMaxWidth().height(8.dp)
 }
+fun Modifier.signUpScreenSpacer(): Modifier{
+    return this.fillMaxWidth().padding(70.dp)
+
+}

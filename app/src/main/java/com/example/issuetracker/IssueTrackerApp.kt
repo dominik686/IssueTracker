@@ -101,6 +101,6 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
     composable(PROJECT_LIST_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
         popExitTransition = {TransitionAnimations.defaultPopExitTransition})
     {
-        ProjectListScreen()
+        ProjectListScreen(popUp = { appState.popUp() })
     }
 }
