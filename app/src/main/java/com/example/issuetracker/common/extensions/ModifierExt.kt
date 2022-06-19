@@ -1,5 +1,6 @@
 package com.example.issuetracker.common.extensions
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,5 +30,5 @@ fun Modifier.smallSpacer(): Modifier {
 }
 fun Modifier.signUpScreenSpacer(): Modifier{
     return this.fillMaxWidth().padding(70.dp)
-
 }
+

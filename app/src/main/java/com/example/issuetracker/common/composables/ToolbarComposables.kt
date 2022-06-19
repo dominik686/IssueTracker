@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
@@ -66,5 +67,34 @@ fun BackButtonToolbar(
                 modifier = Modifier.clickable { backButtonPressed() }
             )
         }}
+    )
+}
+@Composable
+fun BackButtonToolbarWithEndAction(
+    @StringRes title: Int,
+    modifier: Modifier,
+    backButtonPressed: () -> Unit,
+    endAction: () -> Unit,
+    endActionIcon: ImageVector
+)
+{
+    TopAppBar(
+        title = { Text(stringResource(title))
+        },
+        backgroundColor = toolbarColor(),
+        navigationIcon =
+        {IconButton(
+            modifier = modifier,
+            onClick = {
+                backButtonPressed()}, enabled = true) {
+            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back arrow icon",
+                modifier = Modifier.clickable { backButtonPressed() }
+            )
+        }},
+        actions = {
+            IconButton(onClick = endAction) {
+                Icon(imageVector = endActionIcon, contentDescription = "Action")
+            }
+        }
     )
 }
