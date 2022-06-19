@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.issuetracker.*
 import com.example.issuetracker.common.extensions.isValidEmail
 import com.example.issuetracker.common.extensions.isValidPassword
+import com.example.issuetracker.common.extensions.isValidUsername
 import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.model.service.AccountService
 import com.example.issuetracker.model.service.LogService
@@ -28,12 +29,25 @@ class SignUpViewModel @Inject constructor(
         uiState.value = uiState.value.copy(email = email)
 
     }
+    fun onUsernameChange(username: String)
+    {
+        uiState.value = uiState.value.copy(username = username)
+
+    }
 
     fun onSignUpPressed(navigateAndPopUpTo: (String, String) -> Unit) {
 
         val email = uiState.value.email.trim()
         val password = uiState.value.password
         val repeatedPassword = uiState.value.repeatedPassword
+        val username = uiState.value.username
+
+        if(!username.isValidUsername())
+        {
+            SnackbarManager.showMessage(R.string.username_error)
+            Log.d("SignUpScreen", "Invalid username")
+            return
+        }
         if(!email.isValidEmail()){
             SnackbarManager.showMessage(R.string.email_error)
             Log.d("SignUpScreen", "Invalid email")

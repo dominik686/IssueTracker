@@ -1,7 +1,7 @@
 package com.example.issuetracker.model.service.impl
 
 import android.util.Log
-import com.example.issuetracker.model.ProjectsListModel
+import com.example.issuetracker.model.ProjectPublic
 import com.example.issuetracker.model.service.StorageService
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -10,6 +10,15 @@ import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor() : StorageService {
+    override fun addUser(username: String) {
+        val db = Firebase.firestore
+        val user = Firebase.auth.currentUser!!
+        val usersEntry = hashMapOf(
+            "UID" to user.uid,
+            "username" to username,
+            "projects" to emptyList<ProjectPublic>()
+        )
+    }
 
 
     // Maybe I should just put everything in the same collection? Need to rewatch structuring data in firebase
@@ -20,7 +29,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         val user = Firebase.auth.currentUser!!
         val usersEntry = hashMapOf(
             "UID" to user.uid,
-            "projects" to listOf<ProjectsListModel>(ProjectsListModel(), ProjectsListModel() )
+            "projects" to listOf(ProjectPublic(), ProjectPublic() )
         )
 
 
@@ -32,16 +41,17 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         }
     }
 
-    override fun fetchProjectsDebug(onSuccess: (List<ProjectsListModel>) -> Unit) : List<ProjectsListModel> {
+    override fun fetchProjectsDebug(onSuccess: (List<ProjectPublic>) -> Unit) : List<ProjectPublic> {
         val db = Firebase.firestore
         val user = Firebase.auth.currentUser!!
         db.collection("users").whereEqualTo("UID", user.uid).get().addOnSuccessListener { result ->
-            onSuccess(result.toObjects() ?: listOf(ProjectsListModel()))
+            onSuccess(result.toObjects() ?: listOf(ProjectPublic()))
         }
         return emptyList()
     }
 
-    override fun addProject() {
-        TODO("Not yet implemented")
+    override fun addProject(project: ProjectPublic) {
+        val db = Firebase.firestore
+        val user = Firebase.auth.currentUser!!
     }
 }

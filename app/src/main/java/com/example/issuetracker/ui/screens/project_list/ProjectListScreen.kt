@@ -1,37 +1,34 @@
 package com.example.issuetracker.ui.screens.project_list
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.issuetracker.R
-import com.example.issuetracker.common.composables.BackButtonToolbar
-import com.example.issuetracker.common.composables.BackButtonToolbarWithEndAction
-import com.example.issuetracker.common.composables.BasicButton
-import com.example.issuetracker.common.composables.BasicFabButton
-import com.example.issuetracker.common.snackbar.SnackbarManager
-import com.example.issuetracker.common.snackbar.SnackbarMessage
-import com.example.issuetracker.model.ProjectsListModel
+import com.example.issuetracker.common.composables.*
+import com.example.issuetracker.common.extensions.*
+import com.example.issuetracker.model.ProjectPublic
 
 @ExperimentalComposeUiApi
 @Composable
 fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState
 
-    BasicFabButton(fabPosition = FabPosition.Center, onClick = {viewModel.fabPressed()
-                                                               SnackbarManager.showMessage(SnackbarMessage.StringSnackbar("Test"))}, modifier = Modifier)
+    BasicFabButton(fabPosition = FabPosition.Center, onClick = {viewModel.openDialog()})
     {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
     }
@@ -59,7 +56,9 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
 
         if(uiState.dialogOpen)
         {
-            AddNewProjectAlertDialog(modifier = Modifier.fillMaxSize())
+            AddNewProjectAlertDialog(modifier = Modifier.fillMaxSize(),
+                onDismissRequest = { viewModel.closeDialog() }
+            )
         }
 
 
@@ -72,43 +71,73 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
 @ExperimentalComposeUiApi
 @Composable
 fun AddNewProjectAlertDialog(
-   // onDismissRequest: () -> Unit,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 )
 {
-    AlertDialog(modifier = modifier,
+    Dialog(
         onDismissRequest = {
+                           onDismissRequest()
+        },
 
-            //openDialog.value = false
-        },
-        title = {
-            Text(text = "Dialog Title")
-        },
-        text = {
-            Text("Here is a text ")
-        },
-        confirmButton = {
-            Button(
-
-                onClick = {
-                }) {
-                Text("This is the Confirm Button")
-            }
-        },
-        dismissButton = {
-            Button(
-
-                onClick = {
-                }) {
-                Text("This is the dismiss Button")
-            }
-        },
         properties = DialogProperties(
                 usePlatformDefaultWidth = false
-                ),)
+                ),
+        content = {
+            Box(//contentAlignment = Alignment.TopStart,
+                modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)) {
+
+                Spacer(modifier = Modifier.spacer())
+                
+                Column(modifier = modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                )
+                {
+                    Column(modifier = modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                        horizontalAlignment = Alignment.Start,
+                    )
+                    {
+                        IconButton(onClick = { onDismissRequest() }) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = null
+                            )
+                        }
+                    }
+
+
+                    Banner(modifier = Modifier.bannerModifier(), R.string.add_new_project)
+                    BasicField(text = "" , onNewValue = {}, modifier= Modifier.fieldModifier(), imageVector = Icons.Filled.Label, placeholderText = R.string.name)
+                    BasicField(text = "" , onNewValue = {}, modifier= Modifier.fieldModifier(), imageVector = Icons.Filled.Description, placeholderText = R.string.description)
+                    BasicButton(text = R.string.add, modifier= Modifier
+                        .basicButtonModifier()
+                        .fillMaxWidth()){}
+
+
+                }
+
+            }
+        }
+    )
+}
+@ExperimentalComposeUiApi
+@Composable
+fun AddNewProjectDialog(
+    // onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+)
+{
+
 }
 @Composable
-fun TestListElement(project : ProjectsListModel)
+fun TestListElement(project : ProjectPublic)
 {
     Text(project.name)
 }

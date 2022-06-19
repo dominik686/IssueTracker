@@ -35,8 +35,7 @@ fun LoginScreen(navigate: (String) -> Unit,
     )
        {
 
-           Banner(Modifier.bannerModifier())
-           // Replaced purely for debugging
+           Banner(Modifier.bannerModifier(), R.string.app_name)
            EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
            PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
 

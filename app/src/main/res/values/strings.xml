@@ -21,7 +21,13 @@
     <string name="repeat_password_error">Your password should have at least eight digits and include one digit, one lower case letter, one upper case letter and one special character.</string>
     <string name="matching_password_error">Passwords need to be matching</string>
     <string name="sign_up_successful">Account created successfully</string>
+    <string name="username">Username</string>
+    <string name="username_error">Your username should have at eight to sixteen digits or letters and no special characters </string>
 
     <!-- ProjectList Screen -->
     <string name="toolbar_projects">Projects</string>
+    <string name="add_new_project">Add new project</string>
+    <string name="add">Add</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
 </resources>

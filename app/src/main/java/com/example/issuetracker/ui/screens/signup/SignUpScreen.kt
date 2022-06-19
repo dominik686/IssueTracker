@@ -3,6 +3,9 @@ package com.example.issuetracker.ui.screens.signup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,7 +40,8 @@ fun SignUpScreen(popUp: () -> Unit, navigateAndPopUpTo: (String, String) -> Unit
         Spacer(modifier = Modifier.signUpScreenSpacer())
 
 
-        Banner(modifier = Modifier.bannerModifier())
+        Banner(modifier = Modifier.bannerModifier(), R.string.app_name)
+        BasicField(text = uiState.username , onNewValue = {viewModel.onUsernameChange(it)}, modifier= Modifier.fieldModifier(), imageVector = Icons.Filled.Person, placeholderText = R.string.username)
         EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
         PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
         RepeatPasswordField(value = uiState.repeatedPassword , onNewValue ={viewModel.onRepeatPasswordChange(it)}, modifier= Modifier.fieldModifier() )

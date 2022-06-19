@@ -1,11 +1,13 @@
 package com.example.issuetracker.model.service
 
-import com.example.issuetracker.model.ProjectsListModel
+import com.example.issuetracker.model.ProjectPublic
 
 interface StorageService {
+    fun addUser(username: String)
+
     fun addUserAndDefaultProjectsDebug()
 
-    fun fetchProjectsDebug(onSuccess: (List<ProjectsListModel>) ->Unit) : List<ProjectsListModel>
-    fun addProject()
+    fun fetchProjectsDebug(onSuccess: (List<ProjectPublic>) ->Unit) : List<ProjectPublic>
+    fun addProject(project: ProjectPublic)
 
 }
