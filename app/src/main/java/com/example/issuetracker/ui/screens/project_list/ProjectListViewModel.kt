@@ -29,4 +29,8 @@ class ProjectListViewModel @Inject constructor(private val storageService: Stora
 
     fun addNewProject() {
     }
+
+    fun fabPressed() {
+        uiState.value = ProjectListUiState(uiState.value.projects, true)
+    }
 }
