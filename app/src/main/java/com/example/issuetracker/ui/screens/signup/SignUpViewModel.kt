@@ -9,6 +9,7 @@ import com.example.issuetracker.common.extensions.isValidUsername
 import com.example.issuetracker.common.snackbar.SnackbarManager
 import com.example.issuetracker.model.service.AccountService
 import com.example.issuetracker.model.service.LogService
+import com.example.issuetracker.model.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.issuetracker.R.string as AppText
@@ -16,7 +17,8 @@ import com.example.issuetracker.R.string as AppText
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private var accountService: AccountService,
-    private var logService: LogService
+    private var logService: LogService,
+    private var storageService: StorageService
 ):  IssueTrackerViewModel()
 {
     var uiState = mutableStateOf(SignUpUiState())
@@ -40,7 +42,7 @@ class SignUpViewModel @Inject constructor(
         val email = uiState.value.email.trim()
         val password = uiState.value.password
         val repeatedPassword = uiState.value.repeatedPassword
-        val username = uiState.value.username
+        val username = uiState.value.username.trim()
 
         if(!username.isValidUsername())
         {
@@ -72,17 +74,33 @@ class SignUpViewModel @Inject constructor(
         }
         else
         {
-            accountService.createUserWithEmailAndPassword(email, password) {
-                if(it == null)
-                {
-                    Log.d("Firebase", "Account creation successful")
-                    navigateAndPopUpTo(SUCCESSFUL_ACCOUNT_CREATION_SCREEN, SIGN_UP_SCREEN)
+            storageService.checkIfUsernameExists(username = username, onResult = {
+                if(!it){
+                    accountService.createUserWithEmailAndPassword(email, password) {authenticationException ->
+                        if(authenticationException == null)
+                        {
+                            storageService.addUser(username = username, onSuccess = {
+
+                            },
+                                onFailure = {
+                                    SnackbarManager.showMessage(AppText.sign_up_failed)
+
+                                })
+                            Log.d("SignUpScreen", "Account creation successful")
+                            navigateAndPopUpTo(SUCCESSFUL_ACCOUNT_CREATION_SCREEN, SIGN_UP_SCREEN)
+                        }
+                        else {
+                            Log.d("SignUpScreen", "Account creation NOT successful")
+                            logService.logNonFatalException(authenticationException)
+                        }
+                    }
                 }
-                else {
-                    Log.d("Firebase", "Account creation NOT successful")
-                    logService.logNonFatalException(it)
+                else{
+                    SnackbarManager.showMessage(AppText.username_exists_error)
+
                 }
-            }
+
+            })
         }    }
 
     fun onRepeatPasswordChange(repeatedPassword: String) {

@@ -2,6 +2,7 @@ package com.example.issuetracker.ui.screens.project_list
 
 import androidx.compose.runtime.mutableStateOf
 import com.example.issuetracker.IssueTrackerViewModel
+import com.example.issuetracker.model.ProjectPublic
 import com.example.issuetracker.model.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -26,7 +27,8 @@ class ProjectListViewModel @Inject constructor(private val storageService: Stora
         }
     }
 
-    fun addNewProject() {
+    fun addNewProject(name: String, description: String) {
+        storageService.addProject(ProjectPublic(name = name, description = description))
     }
 
     fun openDialog() {

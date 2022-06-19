@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -70,11 +71,15 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
 
 @ExperimentalComposeUiApi
 @Composable
-fun AddNewProjectAlertDialog(
+fun AddNewProjectAlertDialog(onAddPressed: (String, String) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 )
 {
+    val projectName = mutableStateOf<String>()
+    val descriptionName = mutableStateOf<String>()
+
+
     Dialog(
         onDismissRequest = {
                            onDismissRequest()
@@ -90,7 +95,7 @@ fun AddNewProjectAlertDialog(
                 .background(MaterialTheme.colors.background)) {
 
                 Spacer(modifier = Modifier.spacer())
-                
+
                 Column(modifier = modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
@@ -118,7 +123,9 @@ fun AddNewProjectAlertDialog(
                     BasicField(text = "" , onNewValue = {}, modifier= Modifier.fieldModifier(), imageVector = Icons.Filled.Description, placeholderText = R.string.description)
                     BasicButton(text = R.string.add, modifier= Modifier
                         .basicButtonModifier()
-                        .fillMaxWidth()){}
+                        .fillMaxWidth(), action = {
+                            onAddPressed(projectName.value, descriptionName)
+                    })
 
 
                 }

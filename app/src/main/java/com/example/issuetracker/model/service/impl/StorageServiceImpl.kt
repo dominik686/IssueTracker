@@ -4,20 +4,48 @@ import android.util.Log
 import com.example.issuetracker.model.ProjectPublic
 import com.example.issuetracker.model.service.StorageService
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor() : StorageService {
-    override fun addUser(username: String) {
-        val db = Firebase.firestore
-        val user = Firebase.auth.currentUser!!
+    private val db = Firebase.firestore
+
+    companion object
+    {
+       private const val USERS_COLLECTION = "users"
+
+    }
+    override fun addUser(username: String, onSuccess: () -> Unit,
+                         onFailure: () -> Unit
+    ) {
+         val user = Firebase.auth.currentUser!!
+
         val usersEntry = hashMapOf(
             "UID" to user.uid,
             "username" to username,
             "projects" to emptyList<ProjectPublic>()
         )
+        db.collection(USERS_COLLECTION).add(usersEntry)
+    }
+
+    override fun checkIfUsernameExists(username: String, onResult: (Boolean) -> Unit) {
+        db.collection(USERS_COLLECTION).whereEqualTo("username", username).get().addOnSuccessListener {
+            if(it.isEmpty)
+            {
+                onResult(false)
+            }
+            else
+            {
+                onResult(true)
+            }
+        }
+            .addOnFailureListener{
+                onResult(false)
+
+            }
     }
 
 
@@ -51,7 +79,13 @@ class StorageServiceImpl @Inject constructor() : StorageService {
     }
 
     override fun addProject(project: ProjectPublic) {
-        val db = Firebase.firestore
         val user = Firebase.auth.currentUser!!
+
+
+            db.collection(USERS_COLLECTION).whereEqualTo("uid", user.uid).get().addOnSuccessListener { result ->
+                val addProjectToProjects =FieldValue.arrayUnion(project)
+                for(document in result ) document.reference.update("projects", addProjectToProjects)
+            }
+
     }
 }
