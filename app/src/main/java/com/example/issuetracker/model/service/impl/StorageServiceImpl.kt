@@ -2,12 +2,14 @@ package com.example.issuetracker.model.service.impl
 
 import android.util.Log
 import com.example.issuetracker.model.ProjectPublic
+import com.example.issuetracker.model.User
 import com.example.issuetracker.model.service.StorageService
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
+import java.lang.Exception
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor() : StorageService {
@@ -69,23 +71,58 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         }
     }
 
-    override fun fetchProjectsDebug(onSuccess: (List<ProjectPublic>) -> Unit) : List<ProjectPublic> {
+    // Need to get specific field
+    override fun fetchProjects(onSuccess: (List<User>) -> Unit){
         val db = Firebase.firestore
         val user = Firebase.auth.currentUser!!
         db.collection("users").whereEqualTo("UID", user.uid).get().addOnSuccessListener { result ->
-            onSuccess(result.toObjects() ?: listOf(ProjectPublic()))
+            // THis is null which is why listOf(ProjectPublic() is displayed (default)
+            if(result.isEmpty)
+            {
+
+            }
+            else
+            {
+                //onSuccess((result.toObjects() ?: User()) as List<ProjectPublic>)
+               val d =  result.toObjects<User>()
+                onSuccess(d)
+            }
         }
-        return emptyList()
+
     }
 
-    override fun addProject(project: ProjectPublic) {
+    override fun addProject(project: ProjectPublic, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
         val user = Firebase.auth.currentUser!!
 
-
-            db.collection(USERS_COLLECTION).whereEqualTo("uid", user.uid).get().addOnSuccessListener { result ->
-                val addProjectToProjects =FieldValue.arrayUnion(project)
-                for(document in result ) document.reference.update("projects", addProjectToProjects)
+            db.collection(USERS_COLLECTION)
+                .whereEqualTo("UID", user.uid)
+                .get()
+                .addOnFailureListener{ e->
+                onFailure(e)
             }
+                .addOnSuccessListener { result ->
+                    /*
+                    if a project contains the same name/description it will not be added
+                     */
+                val addProjectToProjects =FieldValue.arrayUnion(hashMapOf(
+                    "name" to project.name,
+                    "description" to project.description,
+                ))
+
+                Log.d("StorageService", "isEmpty: ${result.isEmpty} ")
+                for(document in result )
+                {
+                    document.reference.update("projects", addProjectToProjects)
+                        .addOnSuccessListener {
+                        onSuccess()
+                    }
+                        .addOnFailureListener{ e->
+                            onFailure(e)
+                        }
+                }
+
+            }
+
 
     }
 }

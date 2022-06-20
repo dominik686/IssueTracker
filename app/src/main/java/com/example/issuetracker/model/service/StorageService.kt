@@ -1,6 +1,7 @@
 package com.example.issuetracker.model.service
 
 import com.example.issuetracker.model.ProjectPublic
+import com.example.issuetracker.model.User
 
 interface StorageService {
     fun addUser(username: String, onSuccess: () -> Unit,
@@ -10,7 +11,7 @@ interface StorageService {
 
     fun addUserAndDefaultProjectsDebug()
 
-    fun fetchProjectsDebug(onSuccess: (List<ProjectPublic>) ->Unit) : List<ProjectPublic>
-    fun addProject(project: ProjectPublic)
+    fun fetchProjects(onSuccess: (List<User>) -> Unit)
+    fun addProject(project: ProjectPublic, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit)
 
 }
