@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -35,8 +36,10 @@ fun BasicField(
         value = text,
         onValueChange = {onNewValue(it)},
         placeholder = {Text(stringResource(id = placeholderText))},
-        leadingIcon = {Icon(imageVector = imageVector, contentDescription = "")}
-    )
+        leadingIcon = {Icon(imageVector = imageVector, contentDescription = "")},
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+
+        )
 
 }
 
@@ -49,8 +52,10 @@ fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier =
         value = value,
         onValueChange = { onNewValue(it) },
         placeholder = { Text(stringResource(R.string.email)) },
-        leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
-    )
+        leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") },
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+
+        )
 }
 
 @Composable

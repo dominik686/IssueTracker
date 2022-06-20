@@ -26,25 +26,15 @@ fun BasicButton(@StringRes text: Int, modifier: Modifier= Modifier, action: () -
 }
 
 @Composable
-fun DialogConfirmButton(@StringRes text: Int, action: () -> Unit)
-{
-    Button(onClick = action,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary
-        )) {
-        Text(text = stringResource(id = text))
-    }
-}
-
-@Composable
-fun DialogCancelButton(@StringRes text: Int, action: () -> Unit)
-{
-    Button(onClick = action,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary
-        )) {
-        Text(text = stringResource(id = text))
-    }
+fun BasicFabButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    FloatingActionButton(
+        onClick = onClick,
+        modifier = modifier,
+        content = content,
+        backgroundColor = MaterialTheme.colors.primary
+    )
 }

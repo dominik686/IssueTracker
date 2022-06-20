@@ -1,4 +1,4 @@
-package com.example.issuetracker
+package com.example.issuetracker.common.extensions
 
 import com.example.issuetracker.common.extensions.isValidEmail
 import com.example.issuetracker.common.extensions.isValidPassword
