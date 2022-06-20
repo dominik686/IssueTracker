@@ -29,6 +29,7 @@ import com.example.issuetracker.common.extensions.*
 import com.example.issuetracker.model.ProjectPublic
 import com.example.issuetracker.theme.Gray300
 import com.example.issuetracker.theme.Gray700
+import com.example.issuetracker.theme.Gray900
 
 @ExperimentalComposeUiApi
 @Composable
@@ -163,9 +164,9 @@ fun TestListElement(project : ProjectPublic)
         .fillMaxWidth()
         //.height(100.dp)
         .wrapContentHeight()
-        .padding(8.dp) // margin
+        .padding(16.dp) // margin
         .clip(RoundedCornerShape(12.dp))
-        .background(Gray700))
+        .background(Gray900))
     {
         Column(Modifier.padding(8.dp)) {
             Text("Project name:", color = Gray300)

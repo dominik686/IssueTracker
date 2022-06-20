@@ -18,14 +18,14 @@
     <!-- SignUp Screen -->
     <string name="sign_up">Sign up</string>
     <string name="repeat_password">Repeat password</string>
-    <string name="repeat_password_error">Your password should have at least eight digits and include one digit, one lower case letter, one upper case letter and one special character.</string>
+    <string name="repeat_password_error">Your password should have eight to thirty characters, include one digit, one lower case letter, one upper case letter and one special character.</string>
     <string name="matching_password_error">Passwords need to be matching</string>
     <string name="sign_up_successful">Account created successfully</string>
     <string name="sign_up_failed">Account creation failed</string>
     <string name="username_exists_error">Username already exists </string>
 
     <string name="username">Username</string>
-    <string name="username_error">Your username should have at eight to sixteen digits or letters, no special characters and no spaces </string>
+    <string name="username_error">Your username should have  six to sixteen digits or letters, no special characters and no spaces </string>
 
     <!-- ProjectList Screen -->
     <string name="toolbar_projects">Projects</string>
