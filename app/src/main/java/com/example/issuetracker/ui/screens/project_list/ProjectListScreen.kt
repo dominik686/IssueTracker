@@ -1,5 +1,6 @@
 package com.example.issuetracker.ui.screens.project_list
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,36 +40,28 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
 
 
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        BackButtonToolbar(
-            title = R.string.toolbar_projects,
-            backButtonPressed =
-            { viewModel.onBackArrowPressed(popUp) },
-            modifier = Modifier,
-        )
-
-        BasicFabButton(fabPosition = FabPosition.Center, onClick = {viewModel.openDialog()})
+    Scaffold(floatingActionButton = { BasicFabButton(onClick = {viewModel.openDialog()})
         {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
-        }
+          Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
+        } }, topBar ={
+        BackButtonToolbar(
+        title = R.string.toolbar_projects,
+        backButtonPressed =
+        { viewModel.onBackArrowPressed(popUp) },
+        modifier = Modifier,
+    )
+                },  )
+    { padding ->
+        LazyColumn(contentPadding = padding){
 
-
-        viewModel.getProjects()
-        uiState.projects.forEach {
-            TestListElement(it)
-        }
-
-
-        LazyColumn(){
             items(uiState.projects)
             {
                 TestListElement(it)
-
             }
-        }
+
+
+
+    }
 
         if(uiState.dialogOpen)
         {
@@ -82,6 +75,7 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
             viewModel.getProjects()
 
         }
+
 
 
 
