@@ -44,18 +44,19 @@ class ProjectListViewModel @Inject constructor(
 
     }
 
+    fun updateProjects(name: String, description: String)
+    {
+        val project = ProjectPublic(name, description)
+        val newList = uiState.value.projects
+        newList.add(project)
+        uiState.value = uiState.value.copy(projects = newList)
+    }
     fun onAddPressed(name: String, description: String) {
         val newProject = ProjectPublic(name = name, description = description)
         storageService.addProject(newProject, onSuccess = {
-            /*
-            any updates here dont work for some reason
-            val newList = uiState.value.projects
-           newList.add(newProject)
-           uiState.value = uiState.value.copy(projects = newList)
-
-             */
-
-
+           val newList = uiState.value.projects
+            newList.add(newProject)
+            uiState.value = uiState.value.copy(projects = newList)
         },
         onFailure = {e->
             logService.logNonFatalException(e)})

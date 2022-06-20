@@ -11,6 +11,7 @@ import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 import javax.inject.Inject
+import kotlin.random.Random
 
 class StorageServiceImpl @Inject constructor() : StorageService {
     private val db = Firebase.firestore
@@ -101,10 +102,12 @@ class StorageServiceImpl @Inject constructor() : StorageService {
                 onFailure(e)
             }
                 .addOnSuccessListener { result ->
-                    /*
-                    if a project contains the same name/description it will not be added
-                     */
+
                 val addProjectToProjects =FieldValue.arrayUnion(hashMapOf(
+                    /*In the future the ID will be the same id as in the projects collection
+
+                     */
+                    "id" to Random.nextInt(),
                     "name" to project.name,
                     "description" to project.description,
                 ))

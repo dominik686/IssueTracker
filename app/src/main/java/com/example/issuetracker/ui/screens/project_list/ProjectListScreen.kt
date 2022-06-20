@@ -14,10 +14,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Label
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -36,9 +33,8 @@ import com.example.issuetracker.theme.Gray700
 @ExperimentalComposeUiApi
 @Composable
 fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
-    val uiState by remember { viewModel.uiState}
-
-
+    var uiState by remember { viewModel.uiState}
+    viewModel.getProjects()
 
     Scaffold(floatingActionButton = { BasicFabButton(onClick = {viewModel.openDialog()})
         {
@@ -67,14 +63,15 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
         {
             AddNewProjectAlertDialog(
                 modifier = Modifier.fillMaxSize(),
-                onDismissRequest = {viewModel.closeDialog()}
+                onDismissRequest = {viewModel.closeDialog()},
+                onAddPressed = {name, description ->
+                    viewModel.onAddPressed(name, description)
+                    viewModel.closeDialog()
+                    viewModel.updateProjects(name, description)
+                }
             )
         }
-        else
-        {
-            viewModel.getProjects()
 
-        }
 
 
 
@@ -90,6 +87,7 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
 private fun AddNewProjectAlertDialog(
     modifier: Modifier = Modifier,
     viewModel: ProjectListViewModel = hiltViewModel(),
+    onAddPressed:(String, String) -> Unit,
     onDismissRequest: () -> Unit
     )
 {
@@ -147,9 +145,7 @@ private fun AddNewProjectAlertDialog(
                     BasicButton(text = R.string.add, modifier= Modifier
                         .basicButtonModifier()
                         .fillMaxWidth(), action = {
-                        viewModel.onAddPressed(projectName.value, projectDescription.value)
-                        viewModel.closeDialog()
-
+                        onAddPressed(projectName.value, projectDescription.value)
                     })
 
 
