@@ -14,7 +14,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.issuetracker"
+        applicationId "com.dominikwieczynski.issuetracker"
         minSdk 21
         targetSdk 32
         versionCode 1
