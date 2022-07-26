@@ -23,11 +23,11 @@ class LoginViewModel @Inject constructor(
     var uiState = mutableStateOf(LoginUiState())
 
     fun onPasswordChange(password: String) {
-        uiState.value = uiState.value.copy(password = password)
+        uiState.value = uiState.value.copy(password = password, areCredentialsCorrect = true)
     }
 
     fun onEmailChange(email: String) {
-      uiState.value = uiState.value.copy(email = email)
+      uiState.value = uiState.value.copy(email = email, areCredentialsCorrect = true)
 
     }
 
@@ -42,7 +42,7 @@ class LoginViewModel @Inject constructor(
         }
         if(!password.isValidPassword())
         {
-          //  SnackbarManager.showMessage(AppText.password_error)
+            SnackbarManager.showMessage(AppText.password_error)
             Log.d("LoginScreen", "Invalid password")
             return
         }
@@ -56,7 +56,8 @@ class LoginViewModel @Inject constructor(
                 }
                 else {
                     Log.d("Firebase", "Login in NOT successful")
-                    // Shake the fields and tell the user their credentials are incorrect
+                    SnackbarManager.showMessage(AppText.incorrect_credentials)
+                    uiState.value = uiState.component1().copy(areCredentialsCorrect = false)
                     logService.logNonFatalException(exception)
                 }
             }

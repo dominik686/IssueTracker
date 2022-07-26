@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,14 +51,14 @@ fun EndActionToolBar(
 }
 @Composable
 fun BackButtonToolbar(
+    modifier: Modifier = Modifier,
     @StringRes title: Int,
-    modifier: Modifier,
     backButtonPressed: () -> Unit )
 {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = { Text(stringResource(title))
                 },
-        backgroundColor = toolbarColor(),
+      //  backgroundColor = toolbarColor(),
         navigationIcon =
         {IconButton(
             modifier = modifier,
@@ -71,8 +72,8 @@ fun BackButtonToolbar(
 }
 @Composable
 fun BackButtonToolbarWithEndAction(
+    modifier: Modifier = Modifier,
     @StringRes title: Int,
-    modifier: Modifier,
     backButtonPressed: () -> Unit,
     endAction: () -> Unit,
     endActionIcon: ImageVector

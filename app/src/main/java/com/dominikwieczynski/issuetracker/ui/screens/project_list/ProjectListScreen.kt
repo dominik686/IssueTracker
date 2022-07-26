@@ -31,7 +31,7 @@ import com.dominikwieczynski.issuetracker.theme.Gray900
 
 @ExperimentalComposeUiApi
 @Composable
-fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
+fun ProjectListScreen(modifier: Modifier = Modifier, popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
     var uiState by remember { viewModel.uiState}
     viewModel.getProjects()
 
@@ -47,13 +47,28 @@ fun ProjectListScreen(popUp: () -> Unit, viewModel: ProjectListViewModel = hiltV
     )
                 },  )
     { padding ->
-        LazyColumn(contentPadding = padding){
+        if(uiState.projects.isEmpty())
+        {
+            Column(modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Banner(text = AppText.no_projects_message, modifier = Modifier.bannerModifier())
+            }
+        }
+        else{
+            
+        
+        LazyColumn(contentPadding = padding) {
 
             items(uiState.projects)
             {
                 TestListElement(it)
             }
-
+        }
 
 
     }
@@ -160,6 +175,10 @@ private fun AddNewProjectAlertDialog(
 @Composable
 fun TestListElement(project : ProjectPublic)
 {
+
+
+
+    /*
     Box(modifier = Modifier
         .fillMaxWidth()
         //.height(100.dp)
@@ -175,5 +194,8 @@ fun TestListElement(project : ProjectPublic)
             Text(text = project.description, color = Gray300)
 
         }
+        }
+     */
 
-    }}
+
+}

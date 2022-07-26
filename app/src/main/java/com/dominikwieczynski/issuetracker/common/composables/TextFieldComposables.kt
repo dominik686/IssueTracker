@@ -22,11 +22,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.dominikwieczynski.issuetracker.R.string as AppText
 @Composable
 fun BasicField(
+    modifier: Modifier = Modifier,
     @StringRes placeholderText: Int,
     imageVector: ImageVector,
     text : String,
     onNewValue: (String) -> Unit,
-    modifier: Modifier = Modifier
 )
 {
     OutlinedTextField(
@@ -43,8 +43,9 @@ fun BasicField(
 }
 
 @Composable
-fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier)
+fun EmailField(modifier: Modifier = Modifier, value: String, isError: Boolean = false, onNewValue: (String) -> Unit, )
 {
+
     OutlinedTextField(
         singleLine = true,
         modifier = modifier,
@@ -53,27 +54,31 @@ fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier =
         placeholder = { Text(stringResource(AppText.email)) },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") },
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+        isError = isError,
 
         )
 }
 
 @Composable
-fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    PasswordField(value, AppText.password, onNewValue, modifier)
+fun PasswordField(modifier: Modifier = Modifier, value: String, isError: Boolean = false, onNewValue: (String) -> Unit, ) {
+    PasswordField(modifier, value, isError, AppText.password, onNewValue, )
 }
 
 @Composable
-fun RepeatPasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    PasswordField(value, AppText.repeat_password, onNewValue, modifier)
+fun RepeatPasswordField(    modifier: Modifier = Modifier,
+                            value: String, isError: Boolean = false, onNewValue: (String) -> Unit) {
+    PasswordField(modifier, value, isError,  AppText.repeat_password, onNewValue, )
 }
 
 
 @Composable
 private fun PasswordField(
+    modifier: Modifier = Modifier,
     value: String,
+    isError: Boolean,
     @StringRes placeholder: Int,
     onNewValue: (String) -> Unit,
-    modifier: Modifier = Modifier
+
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -84,6 +89,7 @@ private fun PasswordField(
     OutlinedTextField(
         modifier = modifier,
         value = value,
+        isError = isError,
         onValueChange = { onNewValue(it) },
         placeholder = { Text(text = stringResource(placeholder)) },
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },

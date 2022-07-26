@@ -92,6 +92,8 @@ class SignUpViewModel @Inject constructor(
                         else {
                             Log.d("SignUpScreen", "Account creation NOT successful")
                             logService.logNonFatalException(authenticationException)
+                            SnackbarManager.showMessage(AppText.error_occurred)
+
                         }
                     }
                 }

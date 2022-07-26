@@ -1,13 +1,9 @@
 package com.dominikwieczynski.issuetracker.ui.screens.login
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +20,8 @@ fun LoginScreen(navigate: (String) -> Unit,
 {
     val uiState by viewModel.uiState
 
+    val coroutineScope = rememberCoroutineScope()
+
 
     BasicToolbar(title = AppText.sign_in)
 
@@ -37,14 +35,16 @@ fun LoginScreen(navigate: (String) -> Unit,
        {
 
            Banner(Modifier.bannerModifier(), AppText.app_name)
-           EmailField(value = uiState.email , onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
-           PasswordField(value =uiState.password , onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
+           EmailField(isError = !uiState.areCredentialsCorrect, value = uiState.email ,
+               onNewValue = {viewModel.onEmailChange(it)}, modifier= Modifier.fieldModifier())
+           PasswordField(isError = !uiState.areCredentialsCorrect, value =uiState.password ,
+               onNewValue ={viewModel.onPasswordChange(it)}, modifier= Modifier.fieldModifier() )
 
 
            BasicButton(text = AppText.sign_in,modifier= Modifier
                .basicButtonModifier()
                .fillMaxWidth()){viewModel.onSignInPressed(navigate)}
-           TextButton(text = AppText.forgot_password,modifier= Modifier.textButtonModifier()) {viewModel.onForgotPasswordPressed()}
-           TextButton(text = AppText.not_registered,modifier= Modifier.textButtonModifier()) {viewModel.onCreateNewAccountPressed(navigate = navigate)}
+           TextButton(text = AppText.forgot_password,modifier= Modifier.textButtonModifier(), action =  {viewModel.onForgotPasswordPressed()})
+           TextButton(text = AppText.not_registered,modifier= Modifier.textButtonModifier(), action =  {viewModel.onCreateNewAccountPressed(navigate = navigate)})
        }
 }
