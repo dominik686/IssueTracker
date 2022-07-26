@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dominikwieczynski.issuetracker.MainActivity
 import com.dominikwieczynski.issuetracker.common.composables.Banner
-import com.dominikwieczynski.issuetracker.ui.theme.IssueTrackerTheme
+import com.dominikwieczynski.issuetracker.theme.IssueTrackerTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

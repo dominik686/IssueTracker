@@ -21,7 +21,7 @@ import com.dominikwieczynski.issuetracker.ui.screens.login.LoginScreen
 import com.dominikwieczynski.issuetracker.ui.screens.project_list.ProjectListScreen
 import com.dominikwieczynski.issuetracker.ui.screens.signup.SignUpScreen
 import com.dominikwieczynski.issuetracker.ui.screens.success.SuccessScreen
-import com.dominikwieczynski.issuetracker.ui.theme.IssueTrackerTheme
+import com.dominikwieczynski.issuetracker.theme.IssueTrackerTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +37,8 @@ fun IssueTrackerApp()
         Surface(color = MaterialTheme.colors.background) {
             val appState = rememberAppState()
             
-            Scaffold(snackbarHost={
+            Scaffold(
+                snackbarHost={
                 SnackbarHost(hostState = it, modifier = Modifier.padding(), snackbar = {
                         snackbarData ->
                     Snackbar(snackbarData, contentColor = MaterialTheme.colors.onPrimary)  })

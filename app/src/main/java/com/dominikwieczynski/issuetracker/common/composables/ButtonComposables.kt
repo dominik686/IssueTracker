@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,8 +41,8 @@ fun BasicButton(modifier: Modifier= Modifier, @StringRes text: Int, action: () -
 
     }
     Button(onClick = action, modifier = modifier, colors = ButtonDefaults.buttonColors(
-        backgroundColor = MaterialTheme.colors.primary,
-        contentColor = MaterialTheme.colors.onPrimary),
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary),
     ) {
             Text(text = stringResource(id = text), fontSize = 16.sp)
         }
@@ -58,6 +58,6 @@ fun BasicFabButton(
         onClick = onClick,
         modifier = modifier,
         content = content,
-        backgroundColor = MaterialTheme.colors.primary
+        containerColor = MaterialTheme.colorScheme.primary
     )
 }

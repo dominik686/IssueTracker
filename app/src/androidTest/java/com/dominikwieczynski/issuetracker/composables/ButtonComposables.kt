@@ -17,7 +17,7 @@ import com.dominikwieczynski.issuetracker.R
 import com.dominikwieczynski.issuetracker.common.composables.BasicButton
 import com.dominikwieczynski.issuetracker.common.composables.BasicFabButton
 import com.dominikwieczynski.issuetracker.common.composables.TextButton
-import com.dominikwieczynski.issuetracker.ui.theme.IssueTrackerTheme
+import com.dominikwieczynski.issuetracker.theme.IssueTrackerTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
