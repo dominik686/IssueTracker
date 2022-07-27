@@ -62,11 +62,11 @@ fun BackButtonToolbar(
     backButtonPressed: () -> Unit )
 {
 
-/*
-    TopAppBar(
+
+    CenterAlignedTopAppBar(
         title = { Text(textAlign = TextAlign.Companion.Center, text = stringResource(title))
                 },
-        backgroundColor = toolbarColor(),
+      //  backgroundColor = toolbarColor(),
         navigationIcon =
         {IconButton(
             modifier = modifier,
@@ -79,26 +79,8 @@ fun BackButtonToolbar(
     )
 
 
- */
-    CenterAlignedTopAppBar(
-        title = { Text("Centered TopAppBar") },
-        navigationIcon = {
-            IconButton(onClick = { /* doSomething() */ }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = { /* doSomething() */ }) {
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = "Localized description"
-                )
-            }
-        }
-    )
+
+
 }
 @Composable
 fun BackButtonToolbarWithEndAction(

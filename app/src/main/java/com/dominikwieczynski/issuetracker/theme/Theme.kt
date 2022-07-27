@@ -4,7 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import com.dominikwieczynski.issuetracker.ui.theme.Shapes
 import com.dominikwieczynski.issuetracker.ui.theme.Typography
 
 private val DarkColorPalette = darkColorScheme(

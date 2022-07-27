@@ -29,7 +29,7 @@ class ProjectListViewModel @Inject constructor(
     fun getProjects()
     {
         storageService.fetchProjects {
-            uiState.value = uiState.value.copy(projects = it[0].projects.toMutableList())
+            uiState.value = uiState.value.copy(projects = it[0].projects.toMutableList(), listFetched = true)
         }
     }
 

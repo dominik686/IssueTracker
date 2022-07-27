@@ -5,35 +5,34 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.material3.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Label
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dominikwieczynski.issuetracker.R.string as AppText
 import com.dominikwieczynski.issuetracker.common.composables.*
-import com.dominikwieczynski.issuetracker.common.extensions.*
+import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
+import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
+import com.dominikwieczynski.issuetracker.common.extensions.fieldModifier
+import com.dominikwieczynski.issuetracker.common.extensions.spacer
 import com.dominikwieczynski.issuetracker.model.ProjectPublic
-import com.dominikwieczynski.issuetracker.theme.Gray300
-import com.dominikwieczynski.issuetracker.theme.Gray900
+import com.dominikwieczynski.issuetracker.R.string as AppText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
 @Composable
-fun ProjectListScreen(modifier: Modifier = Modifier, popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
+fun ProjectListScreen(modifier: Modifier = Modifier,
+                      popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
     var uiState by remember { viewModel.uiState}
     viewModel.getProjects()
 
@@ -49,7 +48,21 @@ fun ProjectListScreen(modifier: Modifier = Modifier, popUp: () -> Unit, viewMode
     )
                 },  )
     { padding ->
-        if(uiState.projects.isEmpty())
+        if(!uiState.listFetched)
+        {
+            Column(modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                AmongUsLoadingAnimation(Modifier)
+            }
+        }
+
+
+        if(uiState.projects.isEmpty() && uiState.listFetched)
         {
             Column(modifier = modifier
                 .fillMaxWidth()
@@ -62,15 +75,15 @@ fun ProjectListScreen(modifier: Modifier = Modifier, popUp: () -> Unit, viewMode
             }
         }
         else{
-            
-        
-        LazyColumn(contentPadding = padding) {
 
+        LazyColumn(contentPadding = padding) {
             items(uiState.projects)
             {
-                TestListElement(it)
+                ProjectCard(it)
             }
         }
+
+
 
 
     }
@@ -87,14 +100,7 @@ fun ProjectListScreen(modifier: Modifier = Modifier, popUp: () -> Unit, viewMode
                 }
             )
         }
-
-
-
-
-
-
     }
-
 }
 
 
@@ -107,8 +113,8 @@ private fun AddNewProjectAlertDialog(
     onDismissRequest: () -> Unit
     )
 {
-    val projectName =  remember{mutableStateOf("issue")}
-    val projectDescription = remember{mutableStateOf(" tracker")}
+    val projectName =  remember{mutableStateOf("Issue")}
+    val projectDescription = remember{mutableStateOf("Tracker")}
 
 
     Dialog(
@@ -125,7 +131,7 @@ private fun AddNewProjectAlertDialog(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colors.background)) {
+                    .background(MaterialTheme.colorScheme.background)) {
 
                 Spacer(modifier = Modifier.spacer())
 
@@ -176,14 +182,26 @@ private fun AddNewProjectAlertDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TestListElement(project : ProjectPublic)
+fun ProjectCard(project : ProjectPublic)
 {
 
-    Card(
-        modifier = Modifier.size(width = 180.dp, height = 100.dp)
+    ElevatedCard( elevation = CardDefaults.elevatedCardElevation(1.dp),
+        colors = CardDefaults.elevatedCardColors(),
+        modifier = Modifier
+            .wrapContentWidth()
+            .wrapContentHeight()
+            .padding(8.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
-            Text(project.name, Modifier.align(Alignment.Center))
+            Column(Modifier.padding(8.dp)) {
+              //  Text("Name:")
+                Text(text = project.name, style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
+                )
+                Text(text = project.description, style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp))
+
+            }
         }
     }
 

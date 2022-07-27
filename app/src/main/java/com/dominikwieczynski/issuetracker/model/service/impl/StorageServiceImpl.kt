@@ -100,7 +100,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
                 .addOnFailureListener{ e->
                 onFailure(e)
             }
-                .addOnSuccessListener { result ->
+                .addOnSuccessListener { user ->
 
                 val addProjectToProjects =FieldValue.arrayUnion(hashMapOf(
                     /*In the future the ID will be the same id as in the projects collection
@@ -111,8 +111,8 @@ class StorageServiceImpl @Inject constructor() : StorageService {
                     "description" to project.description,
                 ))
 
-                Log.d("StorageService", "isEmpty: ${result.isEmpty} ")
-                for(document in result )
+                Log.d("StorageService", "isEmpty: ${user.isEmpty} ")
+                for(document in user )
                 {
                     document.reference.update("projects", addProjectToProjects)
                         .addOnSuccessListener {
