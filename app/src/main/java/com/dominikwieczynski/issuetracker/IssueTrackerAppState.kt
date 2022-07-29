@@ -1,9 +1,10 @@
 package com.dominikwieczynski.issuetracker
 
 import android.content.res.Resources
+import android.os.Bundle
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Stable
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import com.dominikwieczynski.issuetracker.common.snackbar.SnackbarManager
 import com.dominikwieczynski.issuetracker.common.snackbar.SnackbarMessage.Companion.toMessage
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +48,9 @@ class IssueTrackerAppState(
             popUpTo(popUpTo){inclusive = true}
         }
     }
+
+
+
     fun clearAndNavigate(route: String)
     {
         navHostController.navigate(route){

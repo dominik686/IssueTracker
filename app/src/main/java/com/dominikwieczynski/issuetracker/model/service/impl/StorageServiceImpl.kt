@@ -18,7 +18,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
     companion object
     {
        private const val USERS_COLLECTION = "users"
-
+        private const val PROJECTS_COLLECTION = "projects"
     }
     override fun addUser(username: String, onSuccess: () -> Unit,
                          onFailure: () -> Unit
@@ -51,8 +51,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
     }
 
 
-    // Maybe I should just put everything in the same collection? Need to rewatch structuring data in firebase
-    //You add the users entry, and after it is finished you add the projects subcollection?
+
     override fun addUserAndDefaultProjectsDebug() {
 
         val db = Firebase.firestore
@@ -94,37 +93,45 @@ class StorageServiceImpl @Inject constructor() : StorageService {
     override fun addProject(project: ProjectPublic, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
         val user = Firebase.auth.currentUser!!
 
+        //Add new entry to projects collection
+        val projectsCollectionNewEntry = hashMapOf(
+            "UID" to user.uid,
+            "name" to project.name,
+             "description" to project.description
+        )
+        db.collection(PROJECTS_COLLECTION).add(projectsCollectionNewEntry)
+            .addOnSuccessListener {
             db.collection(USERS_COLLECTION)
                 .whereEqualTo("UID", user.uid)
                 .get()
                 .addOnFailureListener{ e->
-                onFailure(e)
-            }
-                .addOnSuccessListener { user ->
-
-                val addProjectToProjects =FieldValue.arrayUnion(hashMapOf(
-                    /*In the future the ID will be the same id as in the projects collection
-
-                     */
-                    "id" to Random.nextInt(),
-                    "name" to project.name,
-                    "description" to project.description,
-                ))
-
-                Log.d("StorageService", "isEmpty: ${user.isEmpty} ")
-                for(document in user )
-                {
-                    document.reference.update("projects", addProjectToProjects)
-                        .addOnSuccessListener {
-                        onSuccess()
-                    }
-                        .addOnFailureListener{ e->
-                            onFailure(e)
-                        }
+                    onFailure(e)
                 }
+                .addOnSuccessListener { userQuery ->
 
-            }
+                    val addProjectToProjects =FieldValue.arrayUnion(hashMapOf(
+                        /*In the future the ID will be the same id as in the projects collection
 
+                         */
+                        "id" to it.id,
+                        "name" to project.name,
+                        "description" to project.description,
+                    ))
+
+                    Log.d("StorageService", "isEmpty: ${userQuery.isEmpty} ")
+                    for(document in userQuery )
+                    {
+                        document.reference.update("projects", addProjectToProjects)
+                            .addOnSuccessListener {
+                                onSuccess()
+                            }
+                            .addOnFailureListener{ e->
+                                onFailure(e)
+                            }
+                    }
+
+                }
+        }
 
     }
 }

@@ -77,11 +77,19 @@ fun BackButtonToolbar(
             )
         }}
     )
-
-
-
-
 }
+@Composable
+fun IssueListToolbar(modifier: Modifier = Modifier, @StringRes title: Int, backButtonPressed: () -> Unit)
+{
+    CenterAlignedTopAppBar(modifier = modifier, title = { Text(stringResource(title))},
+        navigationIcon = {
+            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back arrow icon",
+                modifier = Modifier.clickable{backButtonPressed()})
+        }
+
+    )
+}
+
 @Composable
 fun BackButtonToolbarWithEndAction(
     modifier: Modifier = Modifier,
@@ -91,10 +99,10 @@ fun BackButtonToolbarWithEndAction(
     endActionIcon: ImageVector
 )
 {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = { Text(stringResource(title))
         },
-        backgroundColor = toolbarColor(),
+      // backgroundColor = toolbarColor(),
         navigationIcon =
         {IconButton(
             modifier = modifier,

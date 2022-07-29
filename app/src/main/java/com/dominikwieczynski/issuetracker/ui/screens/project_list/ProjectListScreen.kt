@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.dominikwieczynski.issuetracker.ISSUE_LIST_SCREEN
 import com.dominikwieczynski.issuetracker.common.composables.*
 import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
@@ -31,7 +32,7 @@ import com.dominikwieczynski.issuetracker.R.string as AppText
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
 @Composable
-fun ProjectListScreen(modifier: Modifier = Modifier,
+fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                       popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
     var uiState by remember { viewModel.uiState}
     viewModel.getProjects()
@@ -52,8 +53,7 @@ fun ProjectListScreen(modifier: Modifier = Modifier,
         {
             Column(modifier = modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
-                .verticalScroll(rememberScrollState()),
+                .fillMaxHeight(fraction = 0.5f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -62,8 +62,9 @@ fun ProjectListScreen(modifier: Modifier = Modifier,
         }
 
 
-        if(uiState.projects.isEmpty() && uiState.listFetched)
-        {
+
+            if(uiState.projects.isEmpty() && uiState.listFetched)
+            {
             Column(modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -74,31 +75,32 @@ fun ProjectListScreen(modifier: Modifier = Modifier,
                 Banner(text = AppText.no_projects_message, modifier = Modifier.bannerModifier())
             }
         }
-        else{
-
+        else
+        {
         LazyColumn(contentPadding = padding) {
             items(uiState.projects)
             {
-                ProjectCard(it)
+                ProjectCard(it, navigate)
             }
         }
 
 
 
 
+
+
     }
 
-        if(uiState.dialogOpen)
+       if(uiState.dialogOpen)
         {
             AddNewProjectAlertDialog(
                 modifier = Modifier.fillMaxSize(),
-                onDismissRequest = {viewModel.closeDialog()},
                 onAddPressed = {name, description ->
                     viewModel.onAddPressed(name, description)
                     viewModel.closeDialog()
                     viewModel.updateProjects(name, description)
                 }
-            )
+            ) { viewModel.closeDialog() }
         }
     }
 }
@@ -108,10 +110,9 @@ fun ProjectListScreen(modifier: Modifier = Modifier,
 @Composable
 private fun AddNewProjectAlertDialog(
     modifier: Modifier = Modifier,
-    viewModel: ProjectListViewModel = hiltViewModel(),
-    onAddPressed:(String, String) -> Unit,
+    onAddPressed: (String, String) -> Unit,
     onDismissRequest: () -> Unit
-    )
+)
 {
     val projectName =  remember{mutableStateOf("Issue")}
     val projectDescription = remember{mutableStateOf("Tracker")}
@@ -182,10 +183,12 @@ private fun AddNewProjectAlertDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectCard(project : ProjectPublic)
+fun ProjectCard(project : ProjectPublic, navigate: (String) -> Unit)
 {
 
-    ElevatedCard( elevation = CardDefaults.elevatedCardElevation(1.dp),
+    ElevatedCard(
+        onClick = { navigate(ISSUE_LIST_SCREEN + "/${project.id}") },
+         elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.elevatedCardColors(),
         modifier = Modifier
             .wrapContentWidth()

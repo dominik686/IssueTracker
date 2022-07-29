@@ -46,7 +46,7 @@ class ProjectListViewModel @Inject constructor(
 
     fun updateProjects(name: String, description: String)
     {
-        val project = ProjectPublic(name, description)
+        val project = ProjectPublic(name = name, description = description)
         val newList = uiState.value.projects
         newList.add(project)
         uiState.value = uiState.value.copy(projects = newList)
