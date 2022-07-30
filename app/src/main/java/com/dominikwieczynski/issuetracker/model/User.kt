@@ -1,6 +1,6 @@
 package com.dominikwieczynski.issuetracker.model
 
-data class User(var username: String = "", var projects: List<ProjectPublic> = emptyList())
+data class User(var username: String = "", var projects: List<Project> = emptyList())
 {
 
 }

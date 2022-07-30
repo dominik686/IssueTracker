@@ -2,7 +2,7 @@ package com.dominikwieczynski.issuetracker.model.service.impl
 
 import android.util.Log
 import com.dominikwieczynski.issuetracker.model.Issue
-import com.dominikwieczynski.issuetracker.model.ProjectPublic
+import com.dominikwieczynski.issuetracker.model.Project
 import com.dominikwieczynski.issuetracker.model.User
 import com.dominikwieczynski.issuetracker.model.service.StorageService
 import com.google.firebase.auth.ktx.auth
@@ -29,7 +29,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         val usersEntry = hashMapOf(
             "UID" to user.uid,
             "username" to username,
-            "projects" to emptyList<ProjectPublic>()
+            "projects" to emptyList<Project>()
         )
         db.collection(USERS_COLLECTION).add(usersEntry)
     }
@@ -59,7 +59,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         val user = Firebase.auth.currentUser!!
         val usersEntry = hashMapOf(
             "UID" to user.uid,
-            "projects" to listOf(ProjectPublic(), ProjectPublic() )
+            "projects" to listOf(Project(), Project() )
         )
 
 
@@ -91,7 +91,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
 
     }
 
-    override fun addProject(project: ProjectPublic, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
+    override fun addProject(project: Project, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
         val user = Firebase.auth.currentUser!!
 
         val projectsCollectionNewEntry = hashMapOf(
@@ -107,7 +107,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         }
 
     }
-    private fun addProjectToUserCollection(project : ProjectPublic, userId: String, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit)
+    private fun addProjectToUserCollection(project : Project, userId: String, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit)
     {
         db.collection(USERS_COLLECTION)
             .whereEqualTo("UID", userId)

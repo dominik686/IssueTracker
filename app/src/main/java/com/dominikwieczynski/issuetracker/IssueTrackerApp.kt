@@ -20,6 +20,7 @@ import com.dominikwieczynski.issuetracker.common.animation.TransitionAnimations
 import com.dominikwieczynski.issuetracker.common.snackbar.SnackbarManager
 import com.dominikwieczynski.issuetracker.theme.IssueTrackerTheme
 import com.dominikwieczynski.issuetracker.ui.screens.add_issue.AddIssueScreen
+import com.dominikwieczynski.issuetracker.ui.screens.add_project.AddProjectScreen
 import com.dominikwieczynski.issuetracker.ui.screens.issue_list.IssueListScreen
 import com.dominikwieczynski.issuetracker.ui.screens.login.LoginScreen
 import com.dominikwieczynski.issuetracker.ui.screens.project_list.ProjectListScreen
@@ -125,5 +126,11 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
         var projectId = backstackEntry.arguments?.get("projectId") as String
 
         AddIssueScreen(popUp = { appState.popUp() }, projectId = projectId)
+    }
+    composable(route= ADD_PROJECT_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        exitTransition = { TransitionAnimations.defaultExitTransition },
+        popExitTransition = {TransitionAnimations.defaultPopExitTransition})
+    {
+        AddProjectScreen(popUp = {appState.popUp()}, )
     }
 }
