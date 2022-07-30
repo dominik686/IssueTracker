@@ -4,5 +4,6 @@ data class Issue(var id : String = "", var name: String = "", var description: S
 {
     enum class IssueLabel{
         BUG, ENHANCEMENT
+
     }
 }

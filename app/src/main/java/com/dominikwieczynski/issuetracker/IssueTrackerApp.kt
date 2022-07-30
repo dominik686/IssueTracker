@@ -19,6 +19,7 @@ import androidx.navigation.navArgument
 import com.dominikwieczynski.issuetracker.common.animation.TransitionAnimations
 import com.dominikwieczynski.issuetracker.common.snackbar.SnackbarManager
 import com.dominikwieczynski.issuetracker.theme.IssueTrackerTheme
+import com.dominikwieczynski.issuetracker.ui.screens.add_issue.AddIssueScreen
 import com.dominikwieczynski.issuetracker.ui.screens.issue_list.IssueListScreen
 import com.dominikwieczynski.issuetracker.ui.screens.login.LoginScreen
 import com.dominikwieczynski.issuetracker.ui.screens.project_list.ProjectListScreen
@@ -115,6 +116,14 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
     { backstackEntry ->
 
        var projectId = backstackEntry.arguments?.get("projectId") as String
-        IssueListScreen(popUp = {appState.popUp()}, projectId = projectId)
+        IssueListScreen(popUp = {appState.popUp()}, navigate = {route -> appState.navigate(route)}, projectId = projectId)
+    }
+    composable(route = "$ADD_ISSUE_SCREEN/{projectId}", arguments = listOf(navArgument("projectId"){type = NavType.Companion.StringType}), enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        exitTransition = { TransitionAnimations.defaultExitTransition },
+        popExitTransition = {TransitionAnimations.defaultPopExitTransition})
+    { backstackEntry ->
+        var projectId = backstackEntry.arguments?.get("projectId") as String
+
+        AddIssueScreen(popUp = { appState.popUp() }, projectId = projectId)
     }
 }
