@@ -7,10 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Label
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -41,11 +38,11 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
         {
           Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
         } }, topBar ={
-        BackButtonToolbar(
-        title = AppText.toolbar_projects,
-        backButtonPressed =
-        { viewModel.onBackArrowPressed(popUp) },
-        modifier = Modifier,
+        NavigationIconToolbar(
+            title = AppText.toolbar_projects,
+            backButtonPressed = { viewModel.onBackArrowPressed(popUp) },
+            modifier = Modifier,
+            icon= Icons.Default.ArrowBack
     )
                 },  )
     { padding ->
@@ -187,7 +184,9 @@ fun ProjectCard(project : ProjectPublic, navigate: (String) -> Unit)
 {
 
     ElevatedCard(
-        onClick = { navigate(ISSUE_LIST_SCREEN + "/${project.id}") },
+        onClick = {
+            navigate(ISSUE_LIST_SCREEN + "/${project.id}")
+                  },
          elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.elevatedCardColors(),
         modifier = Modifier
@@ -207,25 +206,4 @@ fun ProjectCard(project : ProjectPublic, navigate: (String) -> Unit)
             }
         }
     }
-
-    /*
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        //.height(100.dp)
-        .wrapContentHeight()
-        .padding(16.dp) // margin
-        .clip(RoundedCornerShape(12.dp))
-        .background(Gray900))
-    {
-        Column(Modifier.padding(8.dp)) {
-            Text("Project name:", color = Gray300)
-            Text(text = project.name, color = Gray300)
-            Text("Description:", color = Gray300)
-            Text(text = project.description, color = Gray300)
-
-        }
-        }
-     */
-
-
 }

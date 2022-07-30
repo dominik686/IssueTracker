@@ -56,9 +56,10 @@ fun EndActionToolBar(
     )
 }
 @Composable
-fun BackButtonToolbar(
+fun NavigationIconToolbar(
     modifier: Modifier = Modifier,
     @StringRes title: Int,
+    icon: ImageVector,
     backButtonPressed: () -> Unit )
 {
 
@@ -72,7 +73,7 @@ fun BackButtonToolbar(
             modifier = modifier,
             onClick = {
             backButtonPressed()}, enabled = true) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back arrow icon",
+            Icon(imageVector = icon, contentDescription = "Back arrow icon",
                 modifier = Modifier.clickable { backButtonPressed() }
             )
         }}
@@ -89,6 +90,7 @@ fun IssueListToolbar(modifier: Modifier = Modifier, @StringRes title: Int, backB
 
     )
 }
+
 
 @Composable
 fun BackButtonToolbarWithEndAction(

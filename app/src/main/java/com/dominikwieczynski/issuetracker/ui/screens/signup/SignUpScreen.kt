@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +32,7 @@ fun SignUpScreen(popUp: () -> Unit, navigateAndPopUpTo: (String, String) -> Unit
     )
     {
 
-        BackButtonToolbar(title = AppText.sign_up,  modifier = Modifier, backButtonPressed = {viewModel.onBackArrowPressed(popUp)})
+        NavigationIconToolbar(title = AppText.sign_up,  modifier = Modifier, backButtonPressed = {viewModel.onBackArrowPressed(popUp)}, icon= Icons.Default.ArrowBack)
 
 
 

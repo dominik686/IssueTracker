@@ -3,10 +3,7 @@ package com.dominikwieczynski.issuetracker.common.composables
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,6 +13,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.dominikwieczynski.issuetracker.model.Issue
 import com.dominikwieczynski.issuetracker.R.string as AppText
 @Composable
 fun BasicField(
@@ -105,4 +103,32 @@ private fun PasswordField(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = visualTransformation
     )
+}
+
+@Composable
+fun IssueLabelDropdownMenu()
+{
+    var expanded by remember{mutableStateOf(false)}
+    var label by remember{mutableStateOf("")}
+    OutlinedTextField(
+        value = label ,
+        onValueChange = {},
+        placeholder = {Text("Label")},
+        trailingIcon = {
+            val icon =  if(expanded)
+               Icons.Default.ArrowUpward
+            else
+                Icons.Default.ArrowDownward
+
+            IconButton(onClick = {expanded = !expanded}){
+                Icon(imageVector = icon, contentDescription = "Arrow icon",)
+            }
+
+        }
+        )
+    
+    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = true }) {
+        DropdownMenuItem(text = { Text(Issue.IssueLabel.ENHANCEMENT.toString())}, onClick = { label = Issue.IssueLabel.ENHANCEMENT.toString()})
+        DropdownMenuItem(text = { Text(Issue.IssueLabel.BUG.toString())}, onClick = { label = Issue.IssueLabel.BUG.toString()})
+    }
 }
