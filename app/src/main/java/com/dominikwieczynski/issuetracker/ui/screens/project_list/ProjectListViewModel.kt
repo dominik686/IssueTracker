@@ -13,7 +13,7 @@ class ProjectListViewModel @Inject constructor(
     private val storageService: StorageService,
     private val logService: LogService,
 
-    ): IssueTrackerViewModel()
+    ): IssueTrackerViewModel(logService)
 {
 
     /* for some reason projects is not updated correctly and the ui doesnt recomposition

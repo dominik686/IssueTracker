@@ -44,9 +44,7 @@ fun AddProjectScreen(
 
 
 
-    Scaffold(topBar = { NavigationIconToolbar(title = AppText.add_new_project, icon =Icons.Default.Close) {
-
-    }}) {
+    Scaffold(topBar = { NavigationIconToolbar(title = AppText.add_new_project, icon =Icons.Default.Close, backButtonPressed = {popUp()})}) {
         Box(
             modifier = Modifier
                 .padding(it)
@@ -82,6 +80,7 @@ fun AddProjectScreen(
                     .basicButtonModifier()
                     .fillMaxWidth(), action = {
                     viewModel.onAddPressed(projectName.value, projectDescription.value)
+                    popUp()
                 })
 
 

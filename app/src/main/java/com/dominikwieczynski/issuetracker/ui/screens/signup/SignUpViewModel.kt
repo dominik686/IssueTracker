@@ -19,7 +19,7 @@ class SignUpViewModel @Inject constructor(
     private var accountService: AccountService,
     private var logService: LogService,
     private var storageService: StorageService
-):  IssueTrackerViewModel()
+):  IssueTrackerViewModel(logService)
 {
     var uiState = mutableStateOf(SignUpUiState())
 

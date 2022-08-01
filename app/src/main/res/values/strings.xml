@@ -40,6 +40,10 @@
     <!-- IssueList Screen -->
     <string name = "toolbar_issues">Issues</string>
     <string name= "no_issues_message">No issues</string>
-    <string name="add_new_issue">Add new issue</string>
     <string name="title">Title</string>
+
+    <!-- AddIssue Screen -->
+    <string name="add_new_issue">Add new issue</string>
+    <string name="enhancement">Enhancement</string>
+    <string name="bug">Bug</string>
 </resources>

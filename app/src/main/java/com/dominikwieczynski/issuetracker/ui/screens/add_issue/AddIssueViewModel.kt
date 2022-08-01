@@ -13,17 +13,26 @@ import kotlin.random.Random
 class AddIssueViewModel @Inject constructor(
     val logService: LogService,
     val storageService: StorageService
-) : IssueTrackerViewModel()
+) : IssueTrackerViewModel(logService)
 {
     var uiState = mutableStateOf(AddIssueUiState(Issue(name = "Bug nr. ${Random.nextInt()}", description = "Bug nr. ${Random.nextInt()}")))
+
+    fun isLabelSelected() : Boolean{
+        return uiState.value.issue.label.isNotEmpty()
+    }
+
     fun onAddPressed(projectId : String) {
         storageService.addIssue(
-            Issue(name = uiState.value.issue.name, description = uiState.value.issue.description),
+            uiState.value.issue,
             projectId = projectId
         )
 
     }
 
+    fun onSelectionChanged(label: String)
+    {
+        uiState.value = uiState.value.copy(uiState.value.issue.copy(label = label))
+    }
     fun onNameChanged(name: String)
     {
         uiState.value = uiState.value.copy(issue = uiState.value.issue.copy(name = name))

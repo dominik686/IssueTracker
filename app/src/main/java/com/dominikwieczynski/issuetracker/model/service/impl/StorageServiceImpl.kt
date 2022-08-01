@@ -6,15 +6,18 @@ import com.dominikwieczynski.issuetracker.model.Project
 import com.dominikwieczynski.issuetracker.model.User
 import com.dominikwieczynski.issuetracker.model.service.StorageService
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor() : StorageService {
     private val db = Firebase.firestore
-
+    private var listenerRegistration : ListenerRegistration? = null
     companion object
     {
         private const val USERS_COLLECTION = "users"
@@ -32,6 +35,32 @@ class StorageServiceImpl @Inject constructor() : StorageService {
             "projects" to emptyList<Project>()
         )
         db.collection(USERS_COLLECTION).add(usersEntry)
+    }
+
+    override fun addListener(
+        projectId: String,
+        onDocumentEvent: (Boolean, Issue) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val query = Firebase.firestore.collection(ISSUES_COLLECTION).whereEqualTo("projectId", projectId)
+
+        listenerRegistration = query.addSnapshotListener{value, error ->
+            if(error != null){
+                onError(error)
+                return@addSnapshotListener
+            }
+
+            value?.documentChanges?.forEach {
+                val wasIssueAdded = it.type == DocumentChange.Type.ADDED
+                onDocumentEvent(wasIssueAdded, it.document.toObject())
+            }
+        }
+    }
+
+
+
+    override fun removeListener() {
+        listenerRegistration?.remove()
     }
 
     override fun checkIfUsernameExists(username: String, onResult: (Boolean) -> Unit) {
@@ -142,7 +171,8 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         val issueEntry = hashMapOf(
             "projectId" to projectId,
             "name" to issue.name,
-            "description" to issue.description)
+            "description" to issue.description,
+            "label" to issue.label)
         db.collection(ISSUES_COLLECTION).add(issueEntry)
             .addOnSuccessListener {  query ->
                 issue.id = query.id
@@ -152,12 +182,12 @@ class StorageServiceImpl @Inject constructor() : StorageService {
 
     override fun fetchIssues(projectId: String, onSuccess: (List<Issue>) -> Unit) {
         db.collection(PROJECTS_COLLECTION).document(projectId).get().addOnSuccessListener { query ->
-            var issuesRaw =  query.get("issues") as List<HashMap<String, String>>
+            var issuesRaw =  query.get("issues") as List<HashMap<String, String>>? ?: emptyList()
 
             var listOfIssues = mutableListOf<Issue>()
             for(issue in issuesRaw)
             {
-                listOfIssues.add(Issue(id = issue["issueId"]!!, name = issue["name"]!!, description = issue["description"]!! ))
+                listOfIssues.add(Issue(id = issue["issueId"]!!, name = issue["name"]!!, description = issue["description"]!!, label = issue["label"]!! ))
             }
             // THIS BECOMES AN ARRAY LIST OF HASH MAPS
          //   onSuccess(issues)
@@ -170,7 +200,8 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         val issueEntry = FieldValue.arrayUnion(hashMapOf(
             "issueId" to issue.id,
             "name" to issue.name,
-            "description" to issue.description
+            "description" to issue.description,
+            "label" to issue.label
         ))
         db.collection(PROJECTS_COLLECTION).document(projectId).update("issues", issueEntry).addOnSuccessListener { query ->
 

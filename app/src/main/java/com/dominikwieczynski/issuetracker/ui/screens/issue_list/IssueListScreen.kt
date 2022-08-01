@@ -60,6 +60,11 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
 
         }
     }
+
+    DisposableEffect(viewModel){
+        viewModel.addListener()
+        onDispose { viewModel.removeListener() }
+    }
 }
 
 
@@ -85,9 +90,13 @@ private fun IssueCard(issue : Issue, navigate: (String) -> Unit)
         Box(Modifier.fillMaxSize()) {
             Column(Modifier.padding(8.dp)) {
                 //  Text("Name:")
-                Text(text = issue.name, style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
-                )
+                Row {
+                    Text(text = issue.name, style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(start = 4.dp, end = 4.dp)
+                    )
+                    Text(text = issue.label, style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp))
+                }
                 Text(text = issue.description, style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(start = 4.dp, end = 4.dp))
 

@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddProjectViewModel @Inject constructor(var storageService: StorageService,
 var logService: LogService)
-    : IssueTrackerViewModel()
+    : IssueTrackerViewModel(logService)
 {
     var uiState = mutableStateOf(AddProjectUiState())
     fun onAddPressed(name: String, description: String) {

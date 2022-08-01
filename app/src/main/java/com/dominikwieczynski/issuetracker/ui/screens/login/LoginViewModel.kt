@@ -18,7 +18,7 @@ import com.dominikwieczynski.issuetracker.R.string as AppText
 class LoginViewModel @Inject constructor(
     private var accountService: AccountService,
     private var logService: LogService)
-    : IssueTrackerViewModel()
+    : IssueTrackerViewModel(logService)
 {
     var uiState = mutableStateOf(LoginUiState())
 
