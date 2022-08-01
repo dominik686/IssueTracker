@@ -79,7 +79,7 @@ fun AddIssueScreen(modifier: Modifier = Modifier, viewModel: AddIssueViewModel =
                 BasicButton(text = AppText.add, modifier = Modifier
                     .basicButtonModifier()
                     .fillMaxWidth(), action = {
-                    if(viewModel.uiState.value.issue.label != "")
+                    if(viewModel.isLabelSelected())
                     {
                         viewModel.onAddPressed(projectId = projectId)
                         popUp()

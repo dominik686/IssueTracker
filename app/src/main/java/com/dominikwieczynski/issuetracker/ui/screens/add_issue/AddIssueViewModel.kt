@@ -1,16 +1,21 @@
 package com.dominikwieczynski.issuetracker.ui.screens.add_issue
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.dominikwieczynski.issuetracker.IssueTrackerViewModel
 import com.dominikwieczynski.issuetracker.model.Issue
+import com.dominikwieczynski.issuetracker.model.service.AccountService
 import com.dominikwieczynski.issuetracker.model.service.LogService
 import com.dominikwieczynski.issuetracker.model.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltViewModel
 class AddIssueViewModel @Inject constructor(
+    val accountService: AccountService,
     val logService: LogService,
     val storageService: StorageService
 ) : IssueTrackerViewModel(logService)
@@ -43,4 +48,8 @@ class AddIssueViewModel @Inject constructor(
         uiState.value = uiState.value.copy(issue = uiState.value.issue.copy(description = description))
 
     }
+
+
+
+
 }

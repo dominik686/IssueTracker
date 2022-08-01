@@ -22,6 +22,7 @@ import com.dominikwieczynski.issuetracker.ADD_ISSUE_SCREEN
 fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, popUp: () -> Unit, projectId : String, viewModel: IssueListViewModel = hiltViewModel()) {
 
     var uiState by remember { viewModel.uiState }
+    var issues  = viewModel.issues
     viewModel.fetchIssues(projectId = projectId)
 
     Scaffold(modifier = Modifier, topBar = {
@@ -52,7 +53,8 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
         } else {
 
             LazyColumn(Modifier.padding(paddingValues = padding)) {
-                items(uiState.issues)
+               // items(uiState.issues)
+                items(issues)
                 { issue ->
                     IssueCard(issue = issue, navigate = {})
                 }
@@ -62,7 +64,7 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
     }
 
     DisposableEffect(viewModel){
-        viewModel.addListener()
+        viewModel.addListener(projectId)
         onDispose { viewModel.removeListener() }
     }
 }
@@ -101,6 +103,6 @@ private fun IssueCard(issue : Issue, navigate: (String) -> Unit)
                     modifier = Modifier.padding(start = 4.dp, end = 4.dp))
 
             }
-        }
+       }
     }
 }

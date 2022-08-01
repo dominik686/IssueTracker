@@ -42,17 +42,23 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         onDocumentEvent: (Boolean, Issue) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        val query = Firebase.firestore.collection(ISSUES_COLLECTION).whereEqualTo("projectId", projectId)
-
+        // Maybe whereEqual to is broken?
+       val query = Firebase.firestore.collection(ISSUES_COLLECTION).whereEqualTo("projectId", projectId)
+      //  val query = Firebase.firestore.collection(ISSUES_COLLECTION).whereEqualTo("label", "Bug")
         listenerRegistration = query.addSnapshotListener{value, error ->
             if(error != null){
                 onError(error)
                 return@addSnapshotListener
             }
 
-            value?.documentChanges?.forEach {
+            Log.d("IssueScreen", "Listener event")
+            val list = value?.documentChanges ?: emptyList()
+             list.forEach {
+                 /*
+                 Problem here is that each document is always categorized as just added
+                  */
                 val wasIssueAdded = it.type == DocumentChange.Type.ADDED
-                onDocumentEvent(wasIssueAdded, it.document.toObject())
+                onDocumentEvent(wasIssueAdded, it.document.toObject<Issue>())
             }
         }
     }

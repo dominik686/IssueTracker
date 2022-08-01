@@ -1,10 +1,11 @@
 package com.dominikwieczynski.issuetracker.ui.screens.issue_list
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.dominikwieczynski.issuetracker.IssueTrackerViewModel
 import com.dominikwieczynski.issuetracker.model.Issue
-import com.dominikwieczynski.issuetracker.model.service.AccountService
 import com.dominikwieczynski.issuetracker.model.service.LogService
 import com.dominikwieczynski.issuetracker.model.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,15 +14,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IssueListViewModel @Inject constructor(
-    private val accountService: AccountService,
     private val storageService: StorageService,
     private val logService: LogService
 ) : IssueTrackerViewModel(logService) {
     var uiState = mutableStateOf(IssueListUiState())
+    var issues = mutableStateListOf<Issue>()
+        private set
 
-    fun addListener(){
+    fun addListener(projectId: String){
         viewModelScope.launch(showErrorExceptionHandler){
-            storageService.addListener(accountService.getUserId(), ::onDocumentEvent, ::onError)
+            storageService.addListener(projectId, ::onDocumentEvent, ::onError)
+            Log.d("IssueScreen", "ADd listener")
+
         }
     }
 
@@ -37,9 +41,11 @@ class IssueListViewModel @Inject constructor(
 
         if(wasIssueAdded)
         {
-            var newList = uiState.value.issues.toMutableList()
-            newList.add(issue)
-            uiState.value = uiState.value.copy(issues = newList)
+           // Log.d("IssueScreen", "DocumentEvent, was issue added $wasIssueAdded")
+            if(!issues.contains(issue))
+            {
+                issues.add(issue)
+            }
         }
     }
 
@@ -51,7 +57,9 @@ class IssueListViewModel @Inject constructor(
     fun fetchIssues(projectId: String)
     {
         storageService.fetchIssues(projectId = projectId) {
-            uiState.value = uiState.value.copy(issues = it, areIssuesFetched = true)
+            //uiState.value = uiState.value.copy(issues = it, areIssuesFetched = true)
+            uiState.value = uiState.value.copy(areIssuesFetched = true)
+
         }
     }
 }
