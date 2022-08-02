@@ -27,7 +27,8 @@ import com.dominikwieczynski.issuetracker.R.string as AppText
 fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                       popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
     var uiState by remember { viewModel.uiState}
-    viewModel.getProjects()
+    var projects = viewModel.projects
+    viewModel.fetchProjects()
 
     Scaffold(floatingActionButton = { BasicFabButton(onClick = {navigate(ADD_PROJECT_SCREEN)})
         {
@@ -55,7 +56,7 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
 
 
 
-            if(uiState.projects.isEmpty() && uiState.listFetched)
+            if(projects.isEmpty() && uiState.listFetched)
             {
             Column(modifier = modifier
                 .fillMaxWidth()
@@ -69,12 +70,17 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
         }
         else {
                 LazyColumn(contentPadding = padding) {
-                    items(uiState.projects)
+                    items(projects)
                     {
                         ProjectCard(it, navigate)
                     }
                 }
             }
+    }
+
+    DisposableEffect(viewModel){
+        viewModel.addProjectAddedListener()
+        onDispose { viewModel.removeProjectAddedListener() }
     }
 }
 

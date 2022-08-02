@@ -37,26 +37,21 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         db.collection(USERS_COLLECTION).add(usersEntry)
     }
 
-    override fun addListener(
+    override fun addIssueAddedListener(
         projectId: String,
         onDocumentEvent: (Boolean, Issue) -> Unit,
         onError: (Throwable) -> Unit
     ) {
         // Maybe whereEqual to is broken?
        val query = Firebase.firestore.collection(ISSUES_COLLECTION).whereEqualTo("projectId", projectId)
-      //  val query = Firebase.firestore.collection(ISSUES_COLLECTION).whereEqualTo("label", "Bug")
+
         listenerRegistration = query.addSnapshotListener{value, error ->
             if(error != null){
                 onError(error)
                 return@addSnapshotListener
             }
 
-            Log.d("IssueScreen", "Listener event")
-            val list = value?.documentChanges ?: emptyList()
-             list.forEach {
-                 /*
-                 Problem here is that each document is always categorized as just added
-                  */
+            value?.documentChanges?.forEach {
                 val wasIssueAdded = it.type == DocumentChange.Type.ADDED
                 onDocumentEvent(wasIssueAdded, it.document.toObject<Issue>())
             }
@@ -64,8 +59,30 @@ class StorageServiceImpl @Inject constructor() : StorageService {
     }
 
 
+    override fun removeIssueAddedListener() {
+        listenerRegistration?.remove()
+    }
 
-    override fun removeListener() {
+    override fun addProjectAddedListener(
+        onDocumentEvent: (Boolean, User) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        var query =  Firebase.firestore.collection(USERS_COLLECTION).whereEqualTo("UID", Firebase.auth.currentUser?.uid)
+
+        listenerRegistration = query.addSnapshotListener{value, error ->
+            if(error != null)
+            {
+                onError(error)
+            }
+            value?.documentChanges?.forEach{
+                val wasProjectAdded = it.type == DocumentChange.Type.MODIFIED
+
+                onDocumentEvent(wasProjectAdded, it.document.toObject<User>())
+            }
+        }
+    }
+
+    override fun removeProjectAddedListener() {
         listenerRegistration?.remove()
     }
 

@@ -64,8 +64,8 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
     }
 
     DisposableEffect(viewModel){
-        viewModel.addListener(projectId)
-        onDispose { viewModel.removeListener() }
+        viewModel.addIssueAddedListener(projectId)
+        onDispose { viewModel.removeIssueAddedListener() }
     }
 }
 

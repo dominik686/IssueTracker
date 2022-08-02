@@ -1,11 +1,16 @@
 package com.dominikwieczynski.issuetracker.ui.screens.project_list
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.dominikwieczynski.issuetracker.IssueTrackerViewModel
 import com.dominikwieczynski.issuetracker.model.Project
+import com.dominikwieczynski.issuetracker.model.User
 import com.dominikwieczynski.issuetracker.model.service.LogService
 import com.dominikwieczynski.issuetracker.model.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,40 +25,48 @@ class ProjectListViewModel @Inject constructor(
 
      */
     val uiState = mutableStateOf(ProjectListUiState())
+    var projects = mutableStateListOf<Project>()
 
+    fun addProjectAddedListener()
+    {
+        viewModelScope.launch {
+            storageService.addProjectAddedListener(::onDocumentEvent, ::onError)
+        }
+    }
+    fun removeProjectAddedListener()
+    {
+        viewModelScope.launch {
+            storageService.removeProjectAddedListener()
+        }
+    }
+    private fun onDocumentEvent(isProjectAdded: Boolean, user: User) {
+        if(isProjectAdded)
+        {
+            user.projects.forEach{
+                if(!projects.contains(it))
+                {
+                    Log.d("ProjectList", "Project added")
+                    projects.add(it)
+                }
+            }
+        }
+    }
     fun onBackArrowPressed(popUp: () -> Unit) {
         popUp()
     }
 
 
-    fun getProjects()
+    fun fetchProjects()
     {
-        storageService.fetchProjects {
-            uiState.value = uiState.value.copy(projects = it[0].projects.toMutableList(), listFetched = true)
+        storageService.fetchProjects { users ->
+            uiState.value = uiState.value.copy(listFetched = true)
+
+            users.forEach{it.projects.forEach{ project ->
+                if(!projects.contains(project))
+                {
+                    projects.add(project)
+                }
+            }}
         }
     }
-
-
-
-
-    fun updateProjects(name: String, description: String)
-    {
-        val project = Project(name = name, description = description)
-        val newList = uiState.value.projects
-        newList.add(project)
-        uiState.value = uiState.value.copy(projects = newList)
-    }
-    fun onAddPressed(name: String, description: String) {
-        val newProject = Project(name = name, description = description)
-        storageService.addProject(newProject, onSuccess = {
-           val newList = uiState.value.projects
-            newList.add(newProject)
-            uiState.value = uiState.value.copy(projects = newList)
-        },
-        onFailure = {e->
-            logService.logNonFatalException(e)})
-
-    }
-
-
 }

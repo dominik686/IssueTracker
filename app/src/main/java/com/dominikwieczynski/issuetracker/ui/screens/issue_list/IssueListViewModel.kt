@@ -21,18 +21,18 @@ class IssueListViewModel @Inject constructor(
     var issues = mutableStateListOf<Issue>()
         private set
 
-    fun addListener(projectId: String){
+    fun addIssueAddedListener(projectId: String){
         viewModelScope.launch(showErrorExceptionHandler){
-            storageService.addListener(projectId, ::onDocumentEvent, ::onError)
+            storageService.addIssueAddedListener(projectId, ::onDocumentEvent, ::onError)
             Log.d("IssueScreen", "ADd listener")
 
         }
     }
 
-    fun removeListener()
+    fun removeIssueAddedListener()
     {
         viewModelScope.launch { showErrorExceptionHandler
-        storageService.removeListener()
+        storageService.removeIssueAddedListener()
         }
     }
 

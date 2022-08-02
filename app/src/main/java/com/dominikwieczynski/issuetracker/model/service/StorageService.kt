@@ -8,9 +8,13 @@ interface StorageService {
     fun addUser(username: String, onSuccess: () -> Unit,
                 onFailure: () -> Unit)
 
-    fun addListener(projectId : String, onDocumentEvent: (Boolean, Issue) -> Unit,
+    fun addIssueAddedListener(projectId : String, onDocumentEvent: (Boolean, Issue) -> Unit,
     onError: (Throwable) -> Unit)
-    fun removeListener()
+    fun removeIssueAddedListener()
+
+    fun addProjectAddedListener(onDocumentEvent: (Boolean, User) -> Unit, onError: (Throwable) -> Unit)
+    fun removeProjectAddedListener()
+
     fun checkIfUsernameExists(username: String, onResult: (Boolean) -> Unit)
     fun addUserAndDefaultProjectsDebug()
     fun fetchProjects(onSuccess: (List<User>) -> Unit)
