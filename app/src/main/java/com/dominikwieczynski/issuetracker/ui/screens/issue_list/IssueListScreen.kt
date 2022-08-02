@@ -14,6 +14,7 @@ import com.dominikwieczynski.issuetracker.common.composables.*
 import com.dominikwieczynski.issuetracker.model.Issue
 import com.dominikwieczynski.issuetracker.R.string as AppText
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import com.dominikwieczynski.issuetracker.ADD_ISSUE_SCREEN
 
 
@@ -87,22 +88,34 @@ private fun IssueCard(issue : Issue, navigate: (String) -> Unit)
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight()
-            .padding(8.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
-            Column(Modifier.padding(8.dp)) {
+            //Column(Modifier.padding(8.dp)) {
                 //  Text("Name:")
-                Row {
+                //Row {
                     Text(text = issue.name, style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier.padding(start = 4.dp, end = 4.dp)
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .align(Alignment.TopStart)
                     )
-                    Text(text = issue.label, style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp))
-                }
-                Text(text = issue.description, style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp))
-
+            OutlinedCard(
+                elevation = CardDefaults.outlinedCardElevation(),
+                colors = CardDefaults.outlinedCardColors(),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.align(Alignment.TopEnd).padding(horizontal = 8.dp, vertical = 4.dp))
+            {
+                Text(text = issue.label, style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 4.dp))
             }
+              //  }
+                Text(text = issue.description, style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .padding(top = 40.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
+                        .align(Alignment.BottomStart))
+
+          //  }
        }
     }
 }
