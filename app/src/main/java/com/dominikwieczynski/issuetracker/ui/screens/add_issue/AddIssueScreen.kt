@@ -131,6 +131,4 @@ private fun LabelChipGroup(onSelectionChange: (String) -> Unit)
         }
     }
     Divider(Modifier.padding(top = 10.dp, bottom = 10.dp, start = 16.dp, end =16.dp))
-
-
 }

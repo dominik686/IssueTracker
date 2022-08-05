@@ -1,9 +1,11 @@
 package com.dominikwieczynski.issuetracker.ui.screens.project_list
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,6 +22,7 @@ import com.dominikwieczynski.issuetracker.common.composables.*
 import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 import com.dominikwieczynski.issuetracker.model.Project
 import com.dominikwieczynski.issuetracker.R.string as AppText
+import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
@@ -99,18 +102,51 @@ fun ProjectCard(project : Project, navigate: (String) -> Unit)
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight()
-            .padding(8.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
-            Column(Modifier.padding(8.dp)) {
-                //  Text("Name:")
-                Text(text = project.name, style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
-                )
-                Text(text = project.description, style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp))
 
+
+                Text(text = project.name, style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .align(Alignment.TopStart)
+
+            )
+            LazyRow(Modifier
+                .align(Alignment.TopEnd)
+                .fillMaxWidth(0.5f)
+                .padding(horizontal = 8.dp, vertical = 4.dp))
+            {
+                items(project.languages.size)
+                {
+                    Log.d("ProjectList", project.languages[it])
+                    ProgrammingLanguagesCard(language = project.languages[it])
+                }
             }
+
+                Text(text = project.description, style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .padding(top = 40.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
+                        .align(Alignment.BottomStart))
+
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProgrammingLanguagesCard(modifier: Modifier = Modifier, language :String)
+{
+    OutlinedCard(
+        elevation = CardDefaults.outlinedCardElevation(),
+        colors = CardDefaults.outlinedCardColors(),
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier
+            .padding(horizontal = 8.dp, vertical = 4.dp))
+    {
+        Text(text = language, style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 4.dp))
     }
 }

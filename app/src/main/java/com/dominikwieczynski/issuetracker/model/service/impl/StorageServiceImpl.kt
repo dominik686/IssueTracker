@@ -149,7 +149,8 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         val projectsCollectionNewEntry = hashMapOf(
             "UID" to user.uid,
             "name" to project.name,
-             "description" to project.description
+            "description" to project.description,
+            "languages" to project.languages
         )
         db.collection(PROJECTS_COLLECTION).add(projectsCollectionNewEntry)
             .addOnSuccessListener { query ->
@@ -174,6 +175,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
                     "id" to project.id,
                     "name" to project.name,
                     "description" to project.description,
+                    "languages" to project.languages
                 ))
 
                 Log.d("StorageService", "isEmpty: ${userQuery.isEmpty} ")

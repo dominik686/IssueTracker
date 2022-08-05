@@ -105,30 +105,3 @@ private fun PasswordField(
     )
 }
 
-@Composable
-fun IssueLabelDropdownMenu()
-{
-    var expanded by remember{mutableStateOf(false)}
-    var label by remember{mutableStateOf("")}
-    OutlinedTextField(
-        value = label ,
-        onValueChange = {},
-        placeholder = {Text("Label")},
-        trailingIcon = {
-            val icon =  if(expanded)
-               Icons.Default.ArrowUpward
-            else
-                Icons.Default.ArrowDownward
-
-            IconButton(onClick = {expanded = !expanded}){
-                Icon(imageVector = icon, contentDescription = "Arrow icon",)
-            }
-
-        }
-        )
-    
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = true }) {
-        DropdownMenuItem(text = { Text(Issue.IssueLabel.ENHANCEMENT.toString())}, onClick = { label = Issue.IssueLabel.ENHANCEMENT.toString()})
-        DropdownMenuItem(text = { Text(Issue.IssueLabel.BUG.toString())}, onClick = { label = Issue.IssueLabel.BUG.toString()})
-    }
-}

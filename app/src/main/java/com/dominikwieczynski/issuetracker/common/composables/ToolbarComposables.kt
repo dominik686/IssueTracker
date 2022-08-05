@@ -68,6 +68,7 @@ fun NavigationIconToolbar(
         title = { Text(textAlign = TextAlign.Companion.Center, text = stringResource(title))
                 },
       //  backgroundColor = toolbarColor(),
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
         navigationIcon =
         {IconButton(
             modifier = modifier,

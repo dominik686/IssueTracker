@@ -31,12 +31,35 @@
     <!-- ProjectList Screen -->
     <string name="toolbar_projects">Projects</string>
     <string name="no_projects_message">No projects</string>
+
+    <!-- AddProject Screen -->
     <string name="add_new_project">Add new project</string>
     <string name="add">Add</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
 
+    <string-array name="programming_languages_array">
+        <item>C#</item>
+        <item>C++</item>
+        <item>JavaScript</item>
+        <item>CSS</item>
+        <item>Go</item>
+        <item>Swift</item>
+        <item>TypeScript</item>
+        <item>Rust</item>
+        <item>Python</item>
+        <item>PHP</item>
+        <item>Julia</item>
+        <item>Ruby</item>
+        <item>CoffeeScript</item>
+        <item>Elixir</item>
+        <item>Crystal</item>
+        <item>Scala</item>
+        <item>HTML</item>
+        <item>Java</item>
+        <item>Kotlin</item>
 
+    </string-array>
     <!-- IssueList Screen -->
     <string name = "toolbar_issues">Issues</string>
     <string name= "no_issues_message">No issues</string>
