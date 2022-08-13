@@ -39,17 +39,17 @@ class ProjectListViewModel @Inject constructor(
             storageService.removeProjectAddedListener()
         }
     }
-    private fun onDocumentEvent(isProjectAdded: Boolean, user: User) {
-        if(isProjectAdded)
-        {
-            user.projects.forEach{
-                if(!projects.contains(it))
-                {
-                    Log.d("ProjectList", "Project added")
-                    projects.add(it)
-                }
+    private fun onDocumentEvent(user: User) {
+
+        user.projects.forEach{
+            if(!projects.contains(it))
+            {
+                Log.d("ProjectList", "Project added")
+                projects.add(it)
             }
         }
+        if(!uiState.value.listFetched)
+            uiState.value = uiState.value.copy(listFetched = true)
     }
     fun onBackArrowPressed(popUp: () -> Unit) {
         popUp()

@@ -41,7 +41,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
 
     override fun addIssueAddedListener(
         projectId: String,
-        onDocumentEvent: (Boolean, Issue) -> Unit,
+        onDocumentEvent: (Issue) -> Unit,
         onError: (Throwable) -> Unit
     ) {
         // Maybe whereEqual to is broken?
@@ -54,8 +54,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
             }
 
             value?.documentChanges?.forEach {
-                val wasIssueAdded = it.type == DocumentChange.Type.ADDED
-                onDocumentEvent(wasIssueAdded, it.document.toObject<Issue>())
+                onDocumentEvent(it.document.toObject<Issue>())
             }
         }
     }
@@ -66,7 +65,7 @@ class StorageServiceImpl @Inject constructor() : StorageService {
     }
 
     override fun addProjectAddedListener(
-        onDocumentEvent: (Boolean, User) -> Unit,
+        onDocumentEvent: (User) -> Unit,
         onError: (Throwable) -> Unit
     ) {
         var query =  Firebase.firestore.collection(USERS_COLLECTION).whereEqualTo("UID", Firebase.auth.currentUser?.uid)
@@ -77,9 +76,8 @@ class StorageServiceImpl @Inject constructor() : StorageService {
                 onError(error)
             }
             value?.documentChanges?.forEach{
-                val wasProjectAdded = it.type == DocumentChange.Type.MODIFIED
 
-                onDocumentEvent(wasProjectAdded, it.document.toObject<User>())
+                onDocumentEvent(it.document.toObject<User>())
             }
         }
     }

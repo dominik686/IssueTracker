@@ -1,6 +1,10 @@
 package com.dominikwieczynski.issuetracker.ui.screens.project_list
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,6 +27,12 @@ import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 import com.dominikwieczynski.issuetracker.model.Project
 import com.dominikwieczynski.issuetracker.R.string as AppText
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.Velocity
+import com.dominikwieczynski.issuetracker.SETTINGS_SCREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
@@ -31,17 +41,44 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                       popUp: () -> Unit, viewModel: ProjectListViewModel = hiltViewModel()) {
     var uiState by remember { viewModel.uiState}
     var projects = viewModel.projects
-    viewModel.fetchProjects()
+   // viewModel.fetchProjects()
 
-    Scaffold(floatingActionButton = { BasicFabButton(onClick = {navigate(ADD_PROJECT_SCREEN)})
-        {
-          Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
-        } }, topBar ={
+    var isScrollInProgress = remember {mutableStateOf(false)}
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+
+
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                isScrollInProgress.value = true
+                return super.onPreScroll(available, source)
+            }
+
+            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+                isScrollInProgress.value = false
+
+                return super.onPostFling(consumed, available)
+            }
+        }
+    }
+    Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
+        floatingActionButton = {
+            if(!isScrollInProgress.value)
+                AnimatedVisibility(
+                    visible = !isScrollInProgress.value,
+                    enter = fadeIn(animationSpec = tween(1000)),
+                    exit = fadeOut(animationSpec = tween(1000))
+                ) {
+                    BasicFabButton(onClick = {navigate(ADD_PROJECT_SCREEN) })
+                    {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
+                    }
+                }
+             }, topBar ={
         ProjectListToolbar(
             title = AppText.toolbar_projects,
-            endAction = { },
+            endAction = { navigate(SETTINGS_SCREEN)},
             modifier = Modifier,
-            endActionIcon = Icons.Default.Menu
+            endActionIcon = Icons.Default.Settings
     )
                 },  )
     { padding ->
@@ -59,18 +96,18 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
 
 
 
-            if(projects.isEmpty() && uiState.listFetched)
-            {
-            Column(modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Banner(text = AppText.no_projects_message, modifier = Modifier.bannerModifier())
+            if(projects.isEmpty() && uiState.listFetched) {
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Banner(text = AppText.no_projects_message, modifier = Modifier.bannerModifier())
+                }
             }
-        }
         else {
                 LazyColumn(contentPadding = padding) {
                     items(projects)
@@ -113,10 +150,11 @@ fun ProjectCard(project : Project, navigate: (String) -> Unit)
                         .align(Alignment.TopStart)
 
             )
-            LazyRow(Modifier
-                .align(Alignment.TopEnd)
-                .fillMaxWidth(0.5f)
-                .padding(horizontal = 8.dp, vertical = 4.dp))
+            LazyRow(
+                Modifier
+                    .align(Alignment.TopEnd)
+                    .fillMaxWidth(0.5f)
+                    .padding(horizontal = 8.dp, vertical = 4.dp))
             {
                 items(project.languages.size)
                 {

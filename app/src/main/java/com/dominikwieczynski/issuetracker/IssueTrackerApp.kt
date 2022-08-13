@@ -113,49 +113,69 @@ fun resources(): Resources
 fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
 {
      composable(route = LOGIN_SCREEN,
-         exitTransition = {
-         TransitionAnimations.defaultExitTransition },
+         exitTransition = { TransitionAnimations.defaultExitTransition },
          popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
          LoginScreen(navigate = {route -> appState.navigate(route)})
      }
     composable(SIGN_UP_SCREEN,
+        exitTransition = { TransitionAnimations.defaultExitTransition },
         enterTransition   = {TransitionAnimations.defaultEnterTransition },
-        popExitTransition = { TransitionAnimations.defaultPopExitTransition}){
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation})
+        {
         SignUpScreen(popUp = {appState.popUp()}, navigateAndPopUpTo = {route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
     composable(SUCCESSFUL_ACCOUNT_CREATION_SCREEN,
-        popEnterTransition = {TransitionAnimations.defaultPopEnterAnimation},
+        exitTransition = { TransitionAnimations.defaultExitTransition },
         enterTransition   = {TransitionAnimations.defaultEnterTransition },
-        popExitTransition = {TransitionAnimations.defaultPopExitTransition} ){
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
         SuccessScreen(successMessage = R.string.sign_up_successful, popUpTo = {route -> appState.popUpTo(route)})
     }
     composable(PROJECT_LIST_SCREEN,
-        enterTransition   = {TransitionAnimations.defaultEnterTransition },
         exitTransition = { TransitionAnimations.defaultExitTransition },
-        popExitTransition = {TransitionAnimations.defaultPopExitTransition})
+        enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation})
     {
 
         ProjectListScreen(popUp = { appState.popUp() }, navigate = { route -> appState.navigate(route)})
     }
-    composable(route = "$ISSUE_LIST_SCREEN/{projectId}", arguments = listOf(navArgument("projectId"){type = NavType.Companion.StringType}),
-        enterTransition  ={TransitionAnimations.defaultEnterTransition}, exitTransition = {TransitionAnimations.defaultExitTransition})
+    composable(route = "$ISSUE_LIST_SCREEN/{projectId}",
+        arguments = listOf(navArgument("projectId"){type = NavType.Companion.StringType}),
+        exitTransition = { TransitionAnimations.defaultExitTransition },
+        enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation})
     { backstackEntry ->
 
        var projectId = backstackEntry.arguments?.get("projectId") as String
         IssueListScreen(popUp = {appState.popUp()}, navigate = {route -> appState.navigate(route)}, projectId = projectId)
     }
-    composable(route = "$ADD_ISSUE_SCREEN/{projectId}", arguments = listOf(navArgument("projectId"){type = NavType.Companion.StringType}), enterTransition   = {TransitionAnimations.defaultEnterTransition },
+    composable(route = "$ADD_ISSUE_SCREEN/{projectId}",
+        arguments = listOf(navArgument("projectId"){type = NavType.Companion.StringType}),
         exitTransition = { TransitionAnimations.defaultExitTransition },
-        popExitTransition = {TransitionAnimations.defaultPopExitTransition})
+        enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation})
     { backstackEntry ->
         var projectId = backstackEntry.arguments?.get("projectId") as String
 
         AddIssueScreen(popUp = { appState.popUp() }, projectId = projectId)
     }
-    composable(route= ADD_PROJECT_SCREEN, enterTransition   = {TransitionAnimations.defaultEnterTransition },
+    composable(route= ADD_PROJECT_SCREEN,
         exitTransition = { TransitionAnimations.defaultExitTransition },
-        popExitTransition = {TransitionAnimations.defaultPopExitTransition})
+        enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation})
     {
         AddProjectScreen(popUp = {appState.popUp()}, )
+    }
+    composable(route = SETTINGS_SCREEN,
+        exitTransition = { TransitionAnimations.defaultExitTransition },
+        enterTransition   = {TransitionAnimations.defaultEnterTransition },
+        popExitTransition = { TransitionAnimations.defaultPopExitTransition},
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
+
     }
 }

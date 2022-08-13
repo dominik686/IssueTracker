@@ -46,7 +46,6 @@ fun ProjectListToolbar(
     endAction: () -> Unit )
 {
     var menuExpanded by remember{mutableStateOf(false)}
-    val transition = updateTransition(targetState = menuExpanded, label = "")
     CenterAlignedTopAppBar(
         title = { Text(stringResource(title)) },
         actions ={

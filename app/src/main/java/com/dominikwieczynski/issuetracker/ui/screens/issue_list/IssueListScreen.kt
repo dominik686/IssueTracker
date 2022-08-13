@@ -1,5 +1,9 @@
 package com.dominikwieczynski.issuetracker.ui.screens.issue_list
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -15,6 +19,11 @@ import com.dominikwieczynski.issuetracker.model.Issue
 import com.dominikwieczynski.issuetracker.R.string as AppText
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.Velocity
 import com.dominikwieczynski.issuetracker.ADD_ISSUE_SCREEN
 
 
@@ -26,19 +35,44 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
     var issues  = viewModel.issues
     viewModel.fetchIssues(projectId = projectId)
 
-    Scaffold(modifier = Modifier, topBar = {
+    var isScrollInProgress = remember {mutableStateOf(false)}
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+
+
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                isScrollInProgress.value = true
+                return super.onPreScroll(available, source)
+            }
+
+            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+                isScrollInProgress.value = false
+
+                return super.onPostFling(consumed, available)
+            }
+        }
+    }
+
+    Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection    ), topBar = {
         IssueListToolbar(
             title = AppText.toolbar_issues,
             backButtonPressed = popUp,
         )
     },
         floatingActionButton = {
-            BasicFabButton(onClick = { navigate("$ADD_ISSUE_SCREEN/$projectId") }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add issue"
-                )
-            }
+            if(!isScrollInProgress.value)
+                AnimatedVisibility(
+                visible = !isScrollInProgress.value,
+                enter = fadeIn(animationSpec = tween(1000)),
+                exit = fadeOut(animationSpec = tween(1000))
+                ) {
+                    BasicFabButton(onClick = { navigate("$ADD_ISSUE_SCREEN/$projectId") }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add issue"
+                        )
+                    }
+                  }
         }) { padding ->
 
         if (!uiState.areIssuesFetched) {

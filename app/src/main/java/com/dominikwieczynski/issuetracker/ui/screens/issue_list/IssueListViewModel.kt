@@ -37,16 +37,16 @@ class IssueListViewModel @Inject constructor(
     }
 
 
-    private fun onDocumentEvent(wasIssueAdded: Boolean, issue: Issue) {
-
-        if(wasIssueAdded)
-        {
-           // Log.d("IssueScreen", "DocumentEvent, was issue added $wasIssueAdded")
+    private fun onDocumentEvent(issue: Issue) {
             if(!issues.contains(issue))
             {
                 issues.add(issue)
             }
+        if(!uiState.value.areIssuesFetched)
+        {
+            uiState.value = uiState.value.copy(areIssuesFetched = true)
         }
+
     }
 
 
