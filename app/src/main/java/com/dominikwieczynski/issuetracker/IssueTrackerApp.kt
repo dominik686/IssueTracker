@@ -18,6 +18,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.dominikwieczynski.issuetracker.common.animation.TransitionAnimations
 import com.dominikwieczynski.issuetracker.common.snackbar.SnackbarManager
+import com.dominikwieczynski.issuetracker.model.service.impl.AccountServiceImpl
 import com.dominikwieczynski.issuetracker.theme.IssueTrackerTheme
 import com.dominikwieczynski.issuetracker.ui.screens.add_issue.AddIssueScreen
 import com.dominikwieczynski.issuetracker.ui.screens.add_project.AddProjectScreen
@@ -29,31 +30,55 @@ import com.dominikwieczynski.issuetracker.ui.screens.success.SuccessScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun IssueTrackerApp()
-{
-
+fun IssueTrackerApp() {
+    var isUserLoggedIn = remember { false }
+    var isUserLoggedOut = remember { false }
     IssueTrackerTheme {
         Surface(color = MaterialTheme.colors.background) {
             val appState = rememberAppState()
-            
+
             Scaffold(
-                snackbarHost={
-                SnackbarHost(hostState = it, modifier = Modifier.padding(), snackbar = {
-                        snackbarData ->
-                    Snackbar(snackbarData, contentColor = MaterialTheme.colors.onPrimary)  })
-            }, scaffoldState = appState.scaffoldState) {
-                AnimatedNavHost(navController = appState.navHostController, startDestination = LOGIN_SCREEN,
-                modifier = Modifier.padding(it)){
-                    this.issueTrackerGraph(appState)
+                snackbarHost = {
+                    SnackbarHost(
+                        hostState = it,
+                        modifier = Modifier.padding(),
+                        snackbar = { snackbarData ->
+                            Snackbar(snackbarData, contentColor = MaterialTheme.colors.onPrimary)
+                        })
+                }, scaffoldState = appState.scaffoldState
+            ) {
+
+                if(AccountServiceImpl().isUserLoggedIn())
+                {
+                    AnimatedNavHost(
+                        navController = appState.navHostController,
+                        startDestination = PROJECT_LIST_SCREEN,
+                        modifier = Modifier.padding(it)
+                    ) {
+                        this.issueTrackerGraph(appState)
+                    }
                 }
-                
+                else{
+                    AnimatedNavHost(
+                        navController = appState.navHostController,
+                        startDestination = LOGIN_SCREEN,
+                        modifier = Modifier.padding(it)
+                    ) {
+                        this.issueTrackerGraph(appState)
+                    }
+                }
+
             }
+
+
         }
 
     }

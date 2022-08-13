@@ -24,10 +24,17 @@ var logService: LogService)
     }
 
     fun onSelectionChange(label: String) {
-
         val newList = uiState.value.project.languages.toMutableList()
-        newList.add(label)
+
+        if(uiState.value.project.languages.contains(label)) {
+            newList.remove(label)
+        } else {
+            newList.add(label)
+        }
+
         val newProject = uiState.value.project.copy(languages = newList)
         uiState.value = uiState.value.copy(project = newProject)
+
+
     }
 }

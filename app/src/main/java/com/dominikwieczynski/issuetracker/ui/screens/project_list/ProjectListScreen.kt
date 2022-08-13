@@ -37,11 +37,11 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
         {
           Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new project")
         } }, topBar ={
-        NavigationIconToolbar(
+        ProjectListToolbar(
             title = AppText.toolbar_projects,
-            backButtonPressed = { viewModel.onBackArrowPressed(popUp) },
+            endAction = { },
             modifier = Modifier,
-            icon= Icons.Default.ArrowBack
+            endActionIcon = Icons.Default.Menu
     )
                 },  )
     { padding ->

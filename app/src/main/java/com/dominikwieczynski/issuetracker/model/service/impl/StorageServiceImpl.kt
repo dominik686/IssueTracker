@@ -24,6 +24,8 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         private const val PROJECTS_COLLECTION = "projects"
         private const val ISSUES_COLLECTION = "issues"
     }
+
+
     override fun addUser(username: String, onSuccess: () -> Unit,
                          onFailure: () -> Unit
     ) {

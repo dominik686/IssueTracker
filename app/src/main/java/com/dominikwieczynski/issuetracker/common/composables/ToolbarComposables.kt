@@ -2,25 +2,27 @@ package com.dominikwieczynski.issuetracker.common.composables
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color
@@ -37,19 +39,34 @@ fun BasicToolbar(@StringRes title: Int) {
 
 }
 @Composable
-fun EndActionToolBar(
+fun ProjectListToolbar(
     @StringRes title: Int,
-    @DrawableRes endActionIcon: Int,
+     endActionIcon: ImageVector,
     modifier: Modifier,
     endAction: () -> Unit )
 {
-    TopAppBar(
+    var menuExpanded by remember{mutableStateOf(false)}
+    val transition = updateTransition(targetState = menuExpanded, label = "")
+    CenterAlignedTopAppBar(
         title = { Text(stringResource(title)) },
-        backgroundColor = toolbarColor(),
         actions ={
             Box(modifier = modifier){
-                IconButton(onClick = endAction) {
-                    Icon(painter = painterResource(id = endActionIcon), contentDescription = "Action")
+                IconButton(onClick = {menuExpanded = !menuExpanded}) {
+                    Icon(imageVector = endActionIcon, contentDescription = "Action")
+                }
+            }
+            AnimatedVisibility(modifier= Modifier.padding(top = 50.dp),visible = menuExpanded) {
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false }
+                ) {
+                    DropdownMenuItem(onClick = { /*TODO*/ }, leadingIcon = {
+                        Icon(Icons.Filled.Refresh, "")
+                    }, text = { Text(text = "d") })
+                    DropdownMenuItem(
+                        onClick = { /*TODO*/ },
+                        leadingIcon = { Icon(Icons.Filled.Call, "") },
+                        text = { Text(text = "d") })
                 }
             }
         }

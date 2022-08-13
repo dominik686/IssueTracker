@@ -44,8 +44,8 @@ fun AddProjectScreen(
     popUp: () -> Unit,
     viewModel: AddProjectViewModel = hiltViewModel()
 ) {
-    val projectName = remember { mutableStateOf("Issue") }
-    val projectDescription = remember { mutableStateOf("Tracker") }
+    val projectName = remember { mutableStateOf("Issue Tracker") }
+    val projectDescription = remember { mutableStateOf("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tristique, leo ac congue interdum, nunc mi euismod nunc, id lacinia nisl leo at eros. Proin congue, sapien et dignissim ullamcorper, leo lacus tincidunt nulla, laoreet ornare est orci sit amet quam. Nam facilisis ut turpis sit amet feugiat. Ut vel accumsan lorem, sed porta velit. Ut gravida id nulla vulputate consequat. Vivamus ipsum ipsum, faucibus id congue eu, viverra at ipsum. Aliquam ornare nunc ligula, a pretium ante ornare ac. Nulla dignissim tellus nec facilisis consectetur. Nunc elementum interdum enim. Mauris consectetur pellentesque libero consectetur molestie. Aliquam pellentesque ante vitae felis pretium, sed aliquam velit viverra. Suspendisse commodo faucibus enim, ullamcorper sollicitudin nibh mattis non. Vivamus venenatis metus sit amet dolor placerat luctus vitae et velit. Donec sagittis luctus congue. Nam at enim orci. Phasellus nec finibus nisi, quis aliquet mi.") }
 
 
     Scaffold(topBar = { NavigationIconToolbar(title = AppText.add_new_project, icon =Icons.Default.Close, backButtonPressed = {popUp()})}) {
@@ -134,9 +134,11 @@ private fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
                             val newList = selectedLabels.toMutableList()
                             newList.add(it)
                             newList
+
                         }
                         onSelectionChange(it)
-                              },
+
+                    },
                     label = { Text(it) },
                     selectedIcon = {Icon(imageVector = Icons.Outlined.Check, "Check icon")} )
             }
