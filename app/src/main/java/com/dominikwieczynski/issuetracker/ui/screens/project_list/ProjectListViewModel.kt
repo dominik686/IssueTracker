@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.dominikwieczynski.issuetracker.ISSUE_LIST_SCREEN
 import com.dominikwieczynski.issuetracker.IssueTrackerViewModel
 import com.dominikwieczynski.issuetracker.model.Project
 import com.dominikwieczynski.issuetracker.model.User
@@ -68,5 +69,9 @@ class ProjectListViewModel @Inject constructor(
                 }
             }}
         }
+    }
+
+    fun onProjectPressed(navigate: (String) -> Unit, id: String) {
+        navigate(ISSUE_LIST_SCREEN + "/${id}")
     }
 }

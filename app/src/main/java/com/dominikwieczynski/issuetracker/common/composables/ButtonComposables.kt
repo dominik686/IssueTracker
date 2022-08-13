@@ -61,3 +61,28 @@ fun BasicFabButton(
         containerColor = MaterialTheme.colorScheme.primary
     )
 }
+@Composable
+fun DialogConfirmButton(@StringRes text: Int, action: () -> Unit) {
+    androidx.compose.material.Button(
+        onClick = action,
+        colors = androidx.compose.material.ButtonDefaults.buttonColors(
+            backgroundColor = androidx.compose.material.MaterialTheme.colors.primary,
+            contentColor = androidx.compose.material.MaterialTheme.colors.onPrimary
+        )
+    ) {
+        androidx.compose.material.Text(text = stringResource(text))
+    }
+}
+
+@Composable
+fun DialogCancelButton(@StringRes text: Int, action: () -> Unit) {
+    androidx.compose.material.Button(
+        onClick = action,
+        colors = androidx.compose.material.ButtonDefaults.buttonColors(
+            backgroundColor = androidx.compose.material.MaterialTheme.colors.onPrimary,
+            contentColor = androidx.compose.material.MaterialTheme.colors.primary
+        )
+    ) {
+        androidx.compose.material.Text(text = stringResource(text))
+    }
+}

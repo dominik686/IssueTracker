@@ -1,6 +1,5 @@
 package com.dominikwieczynski.issuetracker.ui.screens.add_issue
 
-import android.provider.Settings.Global.getString
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -27,8 +26,6 @@ import com.dominikwieczynski.issuetracker.common.composables.NavigationIconToolb
 import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
 import com.dominikwieczynski.issuetracker.common.extensions.fieldModifier
 import com.dominikwieczynski.issuetracker.common.extensions.spacer
-import com.dominikwieczynski.issuetracker.resources
-import kotlin.random.Random
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +34,7 @@ fun AddIssueScreen(modifier: Modifier = Modifier, viewModel: AddIssueViewModel =
     var uiState by remember {viewModel.uiState}
 
     Scaffold(topBar = {
-        NavigationIconToolbar(title = AppText.add_new_issue, icon = Icons.Default.Close,
+        NavigationIconToolbar(title = AppText.add_new_issue, navigationIcon = Icons.Default.Close,
             backButtonPressed = { popUp() })
     }) { padding ->
         Spacer(modifier = Modifier.spacer())

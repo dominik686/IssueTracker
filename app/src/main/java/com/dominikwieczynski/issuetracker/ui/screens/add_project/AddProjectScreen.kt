@@ -1,6 +1,5 @@
 package com.dominikwieczynski.issuetracker.ui.screens.add_project
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,23 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dominikwieczynski.issuetracker.ISSUE_LIST_SCREEN
 import com.dominikwieczynski.issuetracker.R
 import com.dominikwieczynski.issuetracker.R.string as AppText
-import com.dominikwieczynski.issuetracker.common.composables.Banner
 import com.dominikwieczynski.issuetracker.common.composables.BasicButton
 import com.dominikwieczynski.issuetracker.common.composables.BasicField
 import com.dominikwieczynski.issuetracker.common.composables.NavigationIconToolbar
-import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
 import com.dominikwieczynski.issuetracker.common.extensions.fieldModifier
 import com.dominikwieczynski.issuetracker.common.extensions.spacer
-import com.dominikwieczynski.issuetracker.model.Project
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
@@ -48,7 +40,7 @@ fun AddProjectScreen(
     val projectDescription = remember { mutableStateOf("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tristique, leo ac congue interdum, nunc mi euismod nunc, id lacinia nisl leo at eros. Proin congue, sapien et dignissim ullamcorper, leo lacus tincidunt nulla, laoreet ornare est orci sit amet quam. Nam facilisis ut turpis sit amet feugiat. Ut vel accumsan lorem, sed porta velit. Ut gravida id nulla vulputate consequat. Vivamus ipsum ipsum, faucibus id congue eu, viverra at ipsum. Aliquam ornare nunc ligula, a pretium ante ornare ac. Nulla dignissim tellus nec facilisis consectetur. Nunc elementum interdum enim. Mauris consectetur pellentesque libero consectetur molestie. Aliquam pellentesque ante vitae felis pretium, sed aliquam velit viverra. Suspendisse commodo faucibus enim, ullamcorper sollicitudin nibh mattis non. Vivamus venenatis metus sit amet dolor placerat luctus vitae et velit. Donec sagittis luctus congue. Nam at enim orci. Phasellus nec finibus nisi, quis aliquet mi.") }
 
 
-    Scaffold(topBar = { NavigationIconToolbar(title = AppText.add_new_project, icon =Icons.Default.Close, backButtonPressed = {popUp()})}) {
+    Scaffold(topBar = { NavigationIconToolbar(title = AppText.add_new_project, navigationIcon =Icons.Default.Close, backButtonPressed = {popUp()})}) {
         Box(
             modifier = Modifier
                 .padding(it)

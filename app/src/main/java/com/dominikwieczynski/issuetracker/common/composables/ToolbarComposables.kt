@@ -1,35 +1,20 @@
 package com.dominikwieczynski.issuetracker.common.composables
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color
-{
-    return if(darkTheme) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary
-   // return MaterialTheme.colors.primary
-}
+
 @Composable
 fun BasicToolbar(@StringRes title: Int) {
     CenterAlignedTopAppBar(
@@ -39,33 +24,18 @@ fun BasicToolbar(@StringRes title: Int) {
 
 }
 @Composable
-fun ProjectListToolbar(
+fun ToolbarWithSettings(
     @StringRes title: Int,
-     endActionIcon: ImageVector,
+    settingsIcon: ImageVector,
     modifier: Modifier,
-    endAction: () -> Unit )
+    onSettingsIconPressed: () -> Unit )
 {
-    var menuExpanded by remember{mutableStateOf(false)}
     CenterAlignedTopAppBar(
-        title = { Text(stringResource(title)) },
+        title = { Text(stringResource(title))},
         actions ={
             Box(modifier = modifier){
-                IconButton(onClick = {menuExpanded = !menuExpanded}) {
-                    Icon(imageVector = endActionIcon, contentDescription = "Action")
-                }
-            }
-            AnimatedVisibility(modifier= Modifier.padding(top = 50.dp),visible = menuExpanded) {
-                DropdownMenu(
-                    expanded = menuExpanded,
-                    onDismissRequest = { menuExpanded = false }
-                ) {
-                    DropdownMenuItem(onClick = { /*TODO*/ }, leadingIcon = {
-                        Icon(Icons.Filled.Refresh, "")
-                    }, text = { Text(text = "d") })
-                    DropdownMenuItem(
-                        onClick = { /*TODO*/ },
-                        leadingIcon = { Icon(Icons.Filled.Call, "") },
-                        text = { Text(text = "d") })
+                IconButton(onClick = {onSettingsIconPressed()}) {
+                    Icon(imageVector = settingsIcon, contentDescription = "Action")
                 }
             }
         }
@@ -75,7 +45,7 @@ fun ProjectListToolbar(
 fun NavigationIconToolbar(
     modifier: Modifier = Modifier,
     @StringRes title: Int,
-    icon: ImageVector,
+    navigationIcon: ImageVector,
     backButtonPressed: () -> Unit )
 {
 
@@ -90,7 +60,7 @@ fun NavigationIconToolbar(
             modifier = modifier,
             onClick = {
             backButtonPressed()}, enabled = true) {
-            Icon(imageVector = icon, contentDescription = "Back arrow icon",
+            Icon(imageVector = navigationIcon, contentDescription = "Back arrow icon",
                 modifier = Modifier.clickable { backButtonPressed() }
             )
         }}
@@ -110,30 +80,34 @@ fun IssueListToolbar(modifier: Modifier = Modifier, @StringRes title: Int, backB
 
 
 @Composable
-fun BackButtonToolbarWithEndAction(
-    modifier: Modifier = Modifier,
+fun BackButtonToolbarWithSettings(
     @StringRes title: Int,
-    backButtonPressed: () -> Unit,
-    endAction: () -> Unit,
-    endActionIcon: ImageVector
-)
-{
+    settingsIcon: ImageVector = Icons.Filled.Settings,
+    modifier: Modifier = Modifier,
+    onSettingsIconPressed: () -> Unit,
+    navigationIcon: ImageVector = Icons.Filled.ArrowBack,
+    onBackButtonPressed: () -> Unit ) {
     CenterAlignedTopAppBar(
-        title = { Text(stringResource(title))
-        },
-      // backgroundColor = toolbarColor(),
+        title = { Text(stringResource(title)) },
         navigationIcon =
-        {IconButton(
-            modifier = modifier,
-            onClick = {
-                backButtonPressed()}, enabled = true) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back arrow icon",
-                modifier = Modifier.clickable { backButtonPressed() }
-            )
-        }},
+        {
+            IconButton(
+                modifier = modifier,
+                onClick = {
+                    onBackButtonPressed()
+                }, enabled = true
+            ) {
+                Icon(imageVector = navigationIcon, contentDescription = "Back arrow icon",
+                    modifier = Modifier.clickable { onBackButtonPressed() }
+                )
+            }
+        },
+
         actions = {
-            IconButton(onClick = endAction) {
-                Icon(imageVector = endActionIcon, contentDescription = "Action")
+            Box(modifier = modifier) {
+                IconButton(onClick = { onSettingsIconPressed() }) {
+                    Icon(imageVector = settingsIcon, contentDescription = "Action")
+                }
             }
         }
     )

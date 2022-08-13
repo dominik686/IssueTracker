@@ -18,13 +18,14 @@ import com.dominikwieczynski.issuetracker.common.composables.*
 import com.dominikwieczynski.issuetracker.model.Issue
 import com.dominikwieczynski.issuetracker.R.string as AppText
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.Velocity
-import com.dominikwieczynski.issuetracker.ADD_ISSUE_SCREEN
+import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,18 +46,23 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
                 return super.onPreScroll(available, source)
             }
 
-            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
                 isScrollInProgress.value = false
 
-                return super.onPostFling(consumed, available)
+                return super.onPostScroll(consumed, available, source)
             }
         }
     }
 
     Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection    ), topBar = {
-        IssueListToolbar(
+        BackButtonToolbarWithSettings(
             title = AppText.toolbar_issues,
-            backButtonPressed = popUp,
+            onBackButtonPressed = {popUp()},
+            onSettingsIconPressed = {viewModel.onSettingsIconPressed(navigate)}
         )
     },
         floatingActionButton = {
@@ -66,7 +72,7 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
                 enter = fadeIn(animationSpec = tween(1000)),
                 exit = fadeOut(animationSpec = tween(1000))
                 ) {
-                    BasicFabButton(onClick = { navigate("$ADD_ISSUE_SCREEN/$projectId") }) {
+                    BasicFabButton(onClick = { viewModel.onFabButtonPressed(navigate, projectId) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "Add issue"
@@ -85,17 +91,29 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
             ) {
                 AmongUsLoadingAnimation()
             }
-        } else {
-
+        }
+         if(issues.isEmpty() && uiState.areIssuesFetched){
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Banner(text = AppText.no_issues_message, modifier = Modifier.bannerModifier())
+            }
+        }
+        else if(!issues.isEmpty() && uiState.areIssuesFetched){
             LazyColumn(Modifier.padding(paddingValues = padding)) {
                // items(uiState.issues)
                 items(issues)
                 { issue ->
-                    IssueCard(issue = issue, navigate = {})
+                    IssueCard(issue = issue, onIssuePressed = {id -> viewModel.onIssuePressed(navigate, id)})
                 }
             }
-
         }
+
     }
 
     DisposableEffect(viewModel){
@@ -110,12 +128,12 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun IssueCard(issue : Issue, navigate: (String) -> Unit)
+private fun IssueCard(issue : Issue, onIssuePressed: (String) -> Unit)
 {
 
     ElevatedCard(
         onClick = {
-            
+            onIssuePressed(issue.id)
         },
         elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.elevatedCardColors(),
@@ -125,9 +143,6 @@ private fun IssueCard(issue : Issue, navigate: (String) -> Unit)
             .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
-            //Column(Modifier.padding(8.dp)) {
-                //  Text("Name:")
-                //Row {
                     Text(text = issue.name, style = MaterialTheme.typography.headlineSmall,
                         modifier = Modifier
                             .padding(horizontal = 8.dp, vertical = 4.dp)

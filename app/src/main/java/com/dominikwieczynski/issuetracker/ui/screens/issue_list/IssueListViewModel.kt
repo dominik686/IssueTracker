@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.dominikwieczynski.issuetracker.ADD_ISSUE_SCREEN
 import com.dominikwieczynski.issuetracker.IssueTrackerViewModel
+import com.dominikwieczynski.issuetracker.SETTINGS_SCREEN
 import com.dominikwieczynski.issuetracker.model.Issue
 import com.dominikwieczynski.issuetracker.model.service.LogService
 import com.dominikwieczynski.issuetracker.model.service.StorageService
@@ -21,6 +23,14 @@ class IssueListViewModel @Inject constructor(
     var issues = mutableStateListOf<Issue>()
         private set
 
+    fun onFabButtonPressed(navigate: (String) -> Unit, projectId: String)
+    {
+        navigate("$ADD_ISSUE_SCREEN/$projectId")
+    }
+    fun onSettingsIconPressed(navigate: (String) -> Unit)
+    {
+        navigate(SETTINGS_SCREEN)
+    }
     fun addIssueAddedListener(projectId: String){
         viewModelScope.launch(showErrorExceptionHandler){
             storageService.addIssueAddedListener(projectId, ::onDocumentEvent, ::onError)
@@ -61,5 +71,9 @@ class IssueListViewModel @Inject constructor(
             uiState.value = uiState.value.copy(areIssuesFetched = true)
 
         }
+    }
+
+    fun onIssuePressed(navigate: (String) -> Unit, id: String) {
+
     }
 }

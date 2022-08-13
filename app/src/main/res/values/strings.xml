@@ -69,4 +69,14 @@
     <string name="add_new_issue">Add new issue</string>
     <string name="enhancement">Enhancement</string>
     <string name="bug">Bug</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Settings</string>
+    <string name="sign_out">Sign out</string>
+    <string name="delete_my_account">Delete my account</string>
+    <string name="cancel">Cancel</string>
+    <string name="sign_out_title">Sign out?</string>
+    <string name="sign_out_description">You will have to sign in again to see your issues.</string>
+    <string name="delete_account_title">Delete account?</string>
+    <string name="delete_account_description">You will lose all your issues and your account will be deleted. This action is irreversible.</string>
 </resources>

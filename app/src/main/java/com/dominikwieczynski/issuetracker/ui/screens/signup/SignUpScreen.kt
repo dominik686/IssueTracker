@@ -32,7 +32,7 @@ fun SignUpScreen(popUp: () -> Unit, navigateAndPopUpTo: (String, String) -> Unit
     )
     {
 
-        NavigationIconToolbar(title = AppText.sign_up,  modifier = Modifier, backButtonPressed = {viewModel.onBackArrowPressed(popUp)}, icon= Icons.Default.ArrowBack)
+        NavigationIconToolbar(title = AppText.sign_up,  modifier = Modifier, backButtonPressed = {viewModel.onBackArrowPressed(popUp)}, navigationIcon= Icons.Default.ArrowBack)
 
 
 

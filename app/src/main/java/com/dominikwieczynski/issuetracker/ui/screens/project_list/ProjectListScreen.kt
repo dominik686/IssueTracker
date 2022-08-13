@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dominikwieczynski.issuetracker.ADD_PROJECT_SCREEN
-import com.dominikwieczynski.issuetracker.ISSUE_LIST_SCREEN
 import com.dominikwieczynski.issuetracker.common.composables.*
 import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 import com.dominikwieczynski.issuetracker.model.Project
@@ -31,7 +30,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.Velocity
 import com.dominikwieczynski.issuetracker.SETTINGS_SCREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,10 +51,14 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                 return super.onPreScroll(available, source)
             }
 
-            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
                 isScrollInProgress.value = false
 
-                return super.onPostFling(consumed, available)
+                return super.onPostScroll(consumed, available, source)
             }
         }
     }
@@ -74,11 +76,11 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                     }
                 }
              }, topBar ={
-        ProjectListToolbar(
+        ToolbarWithSettings(
             title = AppText.toolbar_projects,
-            endAction = { navigate(SETTINGS_SCREEN)},
+            onSettingsIconPressed = { navigate(SETTINGS_SCREEN)},
             modifier = Modifier,
-            endActionIcon = Icons.Default.Settings
+            settingsIcon = Icons.Default.Settings
     )
                 },  )
     { padding ->
@@ -112,7 +114,7 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                 LazyColumn(contentPadding = padding) {
                     items(projects)
                     {
-                        ProjectCard(it, navigate)
+                        ProjectCard(it, onProjectPressed = { id -> viewModel.onProjectPressed(navigate, id)})
                     }
                 }
             }
@@ -127,12 +129,12 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectCard(project : Project, navigate: (String) -> Unit)
+fun ProjectCard(project : Project, onProjectPressed: (String) -> Unit)
 {
 
     ElevatedCard(
         onClick = {
-            navigate(ISSUE_LIST_SCREEN + "/${project.id}")
+            onProjectPressed(project.id)
         },
         elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.elevatedCardColors(),

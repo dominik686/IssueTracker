@@ -25,6 +25,7 @@ import com.dominikwieczynski.issuetracker.ui.screens.add_project.AddProjectScree
 import com.dominikwieczynski.issuetracker.ui.screens.issue_list.IssueListScreen
 import com.dominikwieczynski.issuetracker.ui.screens.login.LoginScreen
 import com.dominikwieczynski.issuetracker.ui.screens.project_list.ProjectListScreen
+import com.dominikwieczynski.issuetracker.ui.screens.settings.SettingsScreen
 import com.dominikwieczynski.issuetracker.ui.screens.signup.SignUpScreen
 import com.dominikwieczynski.issuetracker.ui.screens.success.SuccessScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -39,8 +40,6 @@ import kotlinx.coroutines.CoroutineScope
 @ExperimentalMaterialApi
 @Composable
 fun IssueTrackerApp() {
-    var isUserLoggedIn = remember { false }
-    var isUserLoggedOut = remember { false }
     IssueTrackerTheme {
         Surface(color = MaterialTheme.colors.background) {
             val appState = rememberAppState()
@@ -177,5 +176,6 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
         popExitTransition = { TransitionAnimations.defaultPopExitTransition},
         popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
 
+        SettingsScreen(popUp = {appState.popUp()}, clearAndNavigate = {appState.clearAndNavigate(it)})
     }
 }
