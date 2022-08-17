@@ -25,24 +25,17 @@ class SettingsViewModel @Inject constructor(logService: LogService, val accountS
     // Maybe its fai
     fun onDeleteAccountPressed(clearAndNavigate: (String) -> Unit) {
         val uid : String = accountService.getUserId()
-        accountService.deleteAccount {
+        accountService.deleteAccount { it ->
             if (it == null) {
-                storageService.deleteAllUserData(UID = uid, onError = {onError(it)}, onResult = { exception ->
-                    if (exception == null) {
+                storageService.deleteAllUserData(UID = uid,  onResult = {
                         // delete account should sign out as well (according to docs)
                        // accountService.signOut()
                         clearAndNavigate(LOGIN_SCREEN)
-
-                    }
-                    else if(exception != null)
-                    {
-                        onError(exception)
-                    }
                 })
             }
             else if(it != null)
             {
-                onError(it)
+               onError(it)
             }
         }
 
