@@ -174,7 +174,7 @@ fun NavGraphBuilder.issueTrackerGraph(appState : IssueTrackerAppState)
         exitTransition = { TransitionAnimations.defaultExitTransition },
         enterTransition   = {TransitionAnimations.defaultEnterTransition },
         popExitTransition = { TransitionAnimations.defaultPopExitTransition},
-        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){
+        popEnterTransition = { TransitionAnimations.defaultPopEnterAnimation}){ backstackEntry ->
 
         SettingsScreen(popUp = {appState.popUp()}, clearAndNavigate = {appState.clearAndNavigate(it)})
     }

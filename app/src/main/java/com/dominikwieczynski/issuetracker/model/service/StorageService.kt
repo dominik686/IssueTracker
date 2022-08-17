@@ -8,6 +8,9 @@ interface StorageService {
     fun addUser(username: String, onSuccess: () -> Unit,
                 onFailure: () -> Unit)
 
+    fun deleteAllUserData(UID: String, onResult: (Throwable?) -> Unit, onError: (Throwable) -> Unit)
+
+
     fun addIssueAddedListener(projectId : String, onDocumentEvent: (Issue) -> Unit,
     onError: (Throwable) -> Unit)
     fun removeIssueAddedListener()

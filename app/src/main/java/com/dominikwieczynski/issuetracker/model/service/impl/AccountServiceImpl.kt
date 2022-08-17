@@ -9,9 +9,23 @@ import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(): AccountService {
 
     private var authenticationListener : FirebaseAuth.AuthStateListener? = null
+    override fun signOut() {
+         Firebase.auth.signOut()
+    }
+
+
+    private fun onSignOut(onUserLoggedOut: () -> Unit)
+    {
+        authenticationListener = FirebaseAuth.AuthStateListener(){
+            if(it.currentUser == null)
+            {
+                onUserLoggedOut()
+            }
+        }
+    }
 
     override fun isUserLoggedIn(): Boolean {
-       return  Firebase.auth.currentUser != null
+        return  Firebase.auth.currentUser != null
     }
 
     override fun setAuthenticationListener(onUserLoggedOut: () -> Unit,
@@ -43,6 +57,12 @@ class AccountServiceImpl @Inject constructor(): AccountService {
         onResult: (Throwable?) -> Unit
     ) {
         Firebase.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{
+            onResult(it.exception)
+        }
+    }
+
+    override fun deleteAccount(onResult: (Throwable?) -> Unit) {
+        Firebase.auth.currentUser?.delete()?.addOnCompleteListener{
             onResult(it.exception)
         }
     }

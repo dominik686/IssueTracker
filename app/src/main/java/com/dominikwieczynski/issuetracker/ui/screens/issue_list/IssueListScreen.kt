@@ -140,7 +140,7 @@ private fun IssueCard(issue : Issue, onIssuePressed: (String) -> Unit)
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight()
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
                     Text(text = issue.name, style = MaterialTheme.typography.headlineSmall,

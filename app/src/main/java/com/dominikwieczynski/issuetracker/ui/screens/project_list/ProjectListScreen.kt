@@ -30,6 +30,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.Velocity
 import com.dominikwieczynski.issuetracker.SETTINGS_SCREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,20 +52,17 @@ fun ProjectListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit,
                 return super.onPreScroll(available, source)
             }
 
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-                isScrollInProgress.value = false
+            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+               isScrollInProgress.value = false
 
-                return super.onPostScroll(consumed, available, source)
+                return super.onPostFling(consumed, available)
             }
+
         }
     }
     Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
         floatingActionButton = {
-            if(!isScrollInProgress.value)
+
                 AnimatedVisibility(
                     visible = !isScrollInProgress.value,
                     enter = fadeIn(animationSpec = tween(1000)),
@@ -141,7 +139,7 @@ fun ProjectCard(project : Project, onProjectPressed: (String) -> Unit)
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight()
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
 

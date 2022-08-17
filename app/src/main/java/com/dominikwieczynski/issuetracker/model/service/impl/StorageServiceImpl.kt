@@ -39,6 +39,59 @@ class StorageServiceImpl @Inject constructor() : StorageService {
         db.collection(USERS_COLLECTION).add(usersEntry)
     }
 
+    override fun deleteAllUserData(UID: String, onResult: (Throwable?) -> Unit, onError: (Throwable) -> Unit) {
+        deleteUser(UID) {firstException ->
+            if (firstException == null) {
+                deleteProjects(UID) {onResult(it)}
+            }
+            else if(firstException != null)
+            {
+                onError(firstException)
+            }
+            // Else if (it != null)
+            // onFailure
+        }
+    }
+    private fun deleteUser(UID: String, onResult: (Throwable?) -> Unit)
+    {
+        val userQuery = db.collection(USERS_COLLECTION).whereEqualTo("UID", UID)
+            .addSnapshotListener{ query, exception ->
+                var docs = query?.documents
+                query?.documents?.forEach{ document->
+                    // Its not being removed... because you remove an item from the kotlin collection, not the db
+                    document.reference.delete()
+                }
+                onResult(exception)
+
+            }
+    }
+    private fun deleteProjects(UID: String, onResult: (Throwable?) -> Unit)
+    {
+        val projectsQuery = db.collection(PROJECTS_COLLECTION).whereEqualTo("UID", UID)
+            .addSnapshotListener{ query, exception ->
+                var docs = query?.documents
+                query?.documents?.forEach{ document->
+                    document.reference.delete()
+                    query.documents.forEach{
+                        deleteIssues(it.id)
+                    }
+                }
+                onResult(exception)
+            }
+    }
+    private fun deleteIssues(projectId: String)
+    {
+        val projectsQuery = db.collection(ISSUES_COLLECTION).whereEqualTo("projectId", projectId)
+            .addSnapshotListener{ query, exception ->
+                var docs = query?.documents
+
+                query?.documents?.forEach{ document->
+                    document.reference.delete()
+
+                }
+            }
+    }
+
     override fun addIssueAddedListener(
         projectId: String,
         onDocumentEvent: (Issue) -> Unit,

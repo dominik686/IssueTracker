@@ -23,9 +23,11 @@ import com.dominikwieczynski.issuetracker.common.extensions.card
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), clearAndNavigate: (String) -> Unit,
+fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(),
+                   clearAndNavigate: (String) -> Unit,
                    popUp: () -> Unit, )
 {
+    viewModel.setAuthenticationListener(clearAndNavigate)
     Scaffold(topBar = {
         NavigationIconToolbar(
             title = AppText.settings, navigationIcon = Icons.Default.ArrowBack,
@@ -45,7 +47,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), clearAndNavig
                 SignOutCard {
                     viewModel.onSignOutPressed(clearAndNavigate)
                 }
-                DeleteMyAccountCard { viewModel.onDeleteAccountPressed()}
+                DeleteMyAccountCard { viewModel.onDeleteAccountPressed(clearAndNavigate)}
                 /*
                 if (uiState.isAnonymousAccount) {
                     RegularCardEditor(AppText.sign_in, AppIcon.ic_sign_in, "", Modifier.card()) {
