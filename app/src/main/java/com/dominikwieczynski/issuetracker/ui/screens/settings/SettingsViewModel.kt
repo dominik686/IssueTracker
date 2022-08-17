@@ -28,8 +28,6 @@ class SettingsViewModel @Inject constructor(logService: LogService, val accountS
         accountService.deleteAccount { it ->
             if (it == null) {
                 storageService.deleteAllUserData(UID = uid,  onResult = {
-                        // delete account should sign out as well (according to docs)
-                       // accountService.signOut()
                         clearAndNavigate(LOGIN_SCREEN)
                 })
             }

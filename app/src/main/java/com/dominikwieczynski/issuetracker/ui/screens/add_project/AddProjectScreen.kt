@@ -27,6 +27,7 @@ import com.dominikwieczynski.issuetracker.common.composables.NavigationIconToolb
 import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
 import com.dominikwieczynski.issuetracker.common.extensions.fieldModifier
 import com.dominikwieczynski.issuetracker.common.extensions.spacer
+import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalComposeUiApi
@@ -89,10 +90,56 @@ fun AddProjectScreen(
 
 
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
+{
+    var labels = stringArrayResource(id = R.array.programming_languages_array)
+    var selectedLabels  by  remember{ mutableStateOf(emptyList<String>())}
+    // Log.d("AddProject", selectedLabels.toString())
+    Divider(Modifier.padding(top = 10.dp, bottom = 10.dp, start = 16.dp, end =16.dp))
 
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight(),
+        horizontalAlignment = Alignment.Start,
+    )
+    {
+        Text(
+            modifier = Modifier.padding(start =16.dp),
+            text = "Label",
+            style = MaterialTheme.typography.titleMedium
+        )
+        FlowRow(Modifier.padding(start = 16.dp, end = 16.dp), //horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.Top
+        ) {
+            labels.forEach(){
+                ElevatedFilterChip(
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+                    selected = selectedLabels.contains(it),
+                    onClick = {
+                        selectedLabels = if(selectedLabels.contains(it)) {
+                            val newList = selectedLabels.toMutableList()
+                            newList.remove(it)
+                            newList
+                        } else {
+                            val newList = selectedLabels.toMutableList()
+                            newList.add(it)
+                            newList
+
+                        }
+                        onSelectionChange(it)
+
+                    },
+                    label = { Text(it) },
+                    selectedIcon = {Icon(imageVector = Icons.Outlined.Check, "Check icon")} )
+            }
+        }
+    }
+    Divider(Modifier.padding(top = 10.dp, bottom = 10.dp, start = 16.dp, end =16.dp))
+}
+/*
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 private fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
 {
     var labels = stringArrayResource(id = R.array.programming_languages_array)
@@ -138,3 +185,6 @@ private fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
     }
     Divider(Modifier.padding(top = 10.dp, bottom = 10.dp, start = 16.dp, end =16.dp))
 }
+
+
+ */
