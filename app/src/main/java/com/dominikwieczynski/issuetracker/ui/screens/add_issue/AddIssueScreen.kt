@@ -112,7 +112,7 @@ private fun LabelChipGroup(onSelectionChange: (String) -> Unit)
     {
         Text(
             modifier = Modifier.padding(start =16.dp),
-            text = "Label",
+            text = stringResource(AppText.type),
             style = MaterialTheme.typography.titleMedium
         )
         LazyRow(Modifier.padding(start = 16.dp, end = 16.dp), horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.Top) {

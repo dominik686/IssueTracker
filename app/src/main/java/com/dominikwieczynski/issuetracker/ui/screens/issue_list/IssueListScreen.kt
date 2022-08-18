@@ -59,10 +59,11 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
     }
 
     Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection    ), topBar = {
-        BackButtonToolbarWithSettings(
+        BackButtonToolbarWithSettingsAndFilter(
             title = AppText.toolbar_issues,
             onBackButtonPressed = {popUp()},
-            onSettingsIconPressed = {viewModel.onSettingsIconPressed(navigate)}
+            onSettingsIconPressed = {viewModel.onSettingsIconPressed(navigate)},
+            onFilterIconPressed = {}
         )
     },
         floatingActionButton = {

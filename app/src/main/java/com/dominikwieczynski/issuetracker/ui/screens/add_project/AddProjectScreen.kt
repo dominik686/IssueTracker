@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dominikwieczynski.issuetracker.R
@@ -86,13 +87,10 @@ fun AddProjectScreen(
 
         }
     }
-
-
-
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
+fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
 {
     var labels = stringArrayResource(id = R.array.programming_languages_array)
     var selectedLabels  by  remember{ mutableStateOf(emptyList<String>())}
@@ -107,7 +105,7 @@ private fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
     {
         Text(
             modifier = Modifier.padding(start =16.dp),
-            text = "Label",
+            text = stringResource(AppText.programming_languages),
             style = MaterialTheme.typography.titleMedium
         )
         FlowRow(Modifier.padding(start = 16.dp, end = 16.dp), //horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.Top

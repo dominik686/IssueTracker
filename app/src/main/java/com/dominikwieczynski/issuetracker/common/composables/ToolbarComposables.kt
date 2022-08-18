@@ -28,16 +28,24 @@ fun ToolbarWithSettings(
     @StringRes title: Int,
     settingsIcon: ImageVector,
     modifier: Modifier,
-    onSettingsIconPressed: () -> Unit )
+    onSettingsIconPressed: () -> Unit,
+    filterIcon: ImageVector = Icons.Filled.FilterList,
+    onFilterIconPressed: () -> Unit)
 {
     CenterAlignedTopAppBar(
         title = { Text(stringResource(title))},
         actions ={
+            Box(modifier = modifier) {
+                IconButton(onClick = { onFilterIconPressed() }) {
+                    Icon(imageVector = filterIcon, contentDescription = "Action")
+                }
+            }
             Box(modifier = modifier){
                 IconButton(onClick = {onSettingsIconPressed()}) {
                     Icon(imageVector = settingsIcon, contentDescription = "Action")
                 }
             }
+
         }
     )
 }
@@ -80,13 +88,15 @@ fun IssueListToolbar(modifier: Modifier = Modifier, @StringRes title: Int, backB
 
 
 @Composable
-fun BackButtonToolbarWithSettings(
+fun BackButtonToolbarWithSettingsAndFilter(
     @StringRes title: Int,
     settingsIcon: ImageVector = Icons.Filled.Settings,
     modifier: Modifier = Modifier,
     onSettingsIconPressed: () -> Unit,
     navigationIcon: ImageVector = Icons.Filled.ArrowBack,
-    onBackButtonPressed: () -> Unit ) {
+    onBackButtonPressed: () -> Unit,
+    filterIcon: ImageVector = Icons.Filled.FilterList,
+    onFilterIconPressed: () -> Unit) {
     CenterAlignedTopAppBar(
         title = { Text(stringResource(title)) },
         navigationIcon =
@@ -105,10 +115,16 @@ fun BackButtonToolbarWithSettings(
 
         actions = {
             Box(modifier = modifier) {
+                IconButton(onClick = { onFilterIconPressed() }) {
+                    Icon(imageVector = filterIcon, contentDescription = "Action")
+                }
+            }
+            Box(modifier = modifier) {
                 IconButton(onClick = { onSettingsIconPressed() }) {
                     Icon(imageVector = settingsIcon, contentDescription = "Action")
                 }
             }
+
         }
     )
 }
