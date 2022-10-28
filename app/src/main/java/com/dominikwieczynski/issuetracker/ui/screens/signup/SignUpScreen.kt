@@ -31,14 +31,8 @@ fun SignUpScreen(popUp: () -> Unit, navigateAndPopUpTo: (String, String) -> Unit
         horizontalAlignment = Alignment.CenterHorizontally,
     )
     {
-
         NavigationIconToolbar(title = AppText.sign_up,  modifier = Modifier, backButtonPressed = {viewModel.onBackArrowPressed(popUp)}, navigationIcon= Icons.Default.ArrowBack)
-
-
-
         Spacer(modifier = Modifier.signUpScreenSpacer())
-
-
         Banner(modifier = Modifier.bannerModifier(), AppText.app_name)
         BasicField(text = uiState.username , onNewValue = {viewModel.onUsernameChange(it)},
             modifier= Modifier.fieldModifier(), imageVector = Icons.Filled.Person, placeholderText = AppText.username)

@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.dominikwieczynski.issuetracker.model.Issue
 import com.dominikwieczynski.issuetracker.R.string as AppText
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicField(
     modifier: Modifier = Modifier,
@@ -37,6 +38,7 @@ fun BasicField(
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailField(modifier: Modifier = Modifier, value: String, isError: Boolean = false, onNewValue: (String) -> Unit, )
 {
@@ -66,6 +68,7 @@ fun RepeatPasswordField(    modifier: Modifier = Modifier,
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PasswordField(
     modifier: Modifier = Modifier,

@@ -27,7 +27,7 @@ import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
 import com.dominikwieczynski.issuetracker.common.extensions.fieldModifier
 import com.dominikwieczynski.issuetracker.common.extensions.spacer
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddIssueScreen(modifier: Modifier = Modifier, viewModel: AddIssueViewModel = hiltViewModel(), projectId : String, popUp:() -> Unit) {
 
@@ -81,6 +81,10 @@ fun AddIssueScreen(modifier: Modifier = Modifier, viewModel: AddIssueViewModel =
                         viewModel.onAddPressed(projectId = projectId)
                         popUp()
                     }
+                    else if(!viewModel.isLabelSelected())
+                    {
+
+                    }
 
                 })
 
@@ -97,7 +101,6 @@ fun AddIssueScreen(modifier: Modifier = Modifier, viewModel: AddIssueViewModel =
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
 private fun LabelChipGroup(onSelectionChange: (String) -> Unit)
 {
     var labels = listOf<String>(stringResource(id = AppText.enhancement), stringResource(id=AppText.bug))
@@ -123,7 +126,8 @@ private fun LabelChipGroup(onSelectionChange: (String) -> Unit)
                     selected = selectedLabel == it,
                     onClick = { selectedLabel = it; onSelectionChange(it) },
                     label = { Text(it) },
-                    selectedIcon = {Icon(imageVector = Icons.Outlined.Check, "Check icon")} )
+                    leadingIcon = {if(selectedLabel == it)
+                        Icon(imageVector = Icons.Outlined.Check, "Check icon")} )
             }
         }
     }

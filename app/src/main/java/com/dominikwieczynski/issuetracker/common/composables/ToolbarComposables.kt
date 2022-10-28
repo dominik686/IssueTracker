@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicToolbar(@StringRes title: Int) {
     CenterAlignedTopAppBar(
@@ -23,6 +24,7 @@ fun BasicToolbar(@StringRes title: Int) {
     )
 
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToolbarWithSettings(
     @StringRes title: Int,
@@ -49,6 +51,7 @@ fun ToolbarWithSettings(
         }
     )
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationIconToolbar(
     modifier: Modifier = Modifier,
@@ -74,6 +77,7 @@ fun NavigationIconToolbar(
         }}
     )
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IssueListToolbar(modifier: Modifier = Modifier, @StringRes title: Int, backButtonPressed: () -> Unit)
 {
@@ -87,6 +91,7 @@ fun IssueListToolbar(modifier: Modifier = Modifier, @StringRes title: Int, backB
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BackButtonToolbarWithSettingsAndFilter(
     @StringRes title: Int,

@@ -129,7 +129,7 @@ fun ProgrammingLanguagesChipGroup(onSelectionChange: (String) -> Unit)
 
                     },
                     label = { Text(it) },
-                    selectedIcon = {Icon(imageVector = Icons.Outlined.Check, "Check icon")} )
+                    leadingIcon = {Icon(imageVector = Icons.Outlined.Check, "Check icon")} )
             }
         }
     }
