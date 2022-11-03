@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -25,6 +26,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.dominikwieczynski.issuetracker.R
 import com.dominikwieczynski.issuetracker.common.extensions.bannerModifier
 
 
@@ -125,13 +130,10 @@ fun IssueListScreen(modifier: Modifier = Modifier, navigate: (String) -> Unit, p
 
 
 
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IssueCard(issue : Issue, onIssuePressed: (String) -> Unit)
 {
-
     ElevatedCard(
         onClick = {
             onIssuePressed(issue.id)
@@ -144,28 +146,65 @@ private fun IssueCard(issue : Issue, onIssuePressed: (String) -> Unit)
             .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
-                    Text(text = issue.name, style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                            .align(Alignment.TopStart)
-                    )
-            OutlinedCard(
-                elevation = CardDefaults.outlinedCardElevation(),
-                colors = CardDefaults.outlinedCardColors(),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.align(Alignment.TopEnd).padding(horizontal = 8.dp, vertical = 4.dp))
+            Row(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            )
             {
-                Text(text = issue.label, style = MaterialTheme.typography.titleSmall,
+                Image(painter = painterResource(R.drawable.check_circle), contentDescription = "Issue solved icon",
                     modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 4.dp))
-            }
-              //  }
-                Text(text = issue.description, style = MaterialTheme.typography.bodySmall,
+                        // .align(Alignment.CenterStart)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
+                Text(text = issue.name, style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier
-                        .padding(top = 40.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
-                        .align(Alignment.BottomStart))
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
 
-          //  }
-       }
+                )
+                LabelCard(label = issue.label, Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+            }
+            /*
+            Image(painter = painterResource(R.drawable.check_circle), contentDescription = "Issue solved icon",
+                modifier = Modifier
+                    // .align(Alignment.CenterStart)
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .align(Alignment.TopStart))
+            Text(text = issue.name, style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .align(Alignment.TopCenter)
+            )
+            LabelCard(label = issue.label, Modifier
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+                .align(Alignment.TopEnd)
+            )
+
+
+             */
+            Text(text = issue.description, style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .padding(top = 40.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
+                    .align(Alignment.BottomStart))
+
+        }
+    }
+}
+
+@Composable
+private  fun LabelCard(label : String, modifier: Modifier = Modifier)
+{
+    OutlinedCard(
+        elevation = CardDefaults.outlinedCardElevation(),
+        colors = CardDefaults.outlinedCardColors(),
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier)
+    {
+        Text(text = label, style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 4.dp))
     }
 }

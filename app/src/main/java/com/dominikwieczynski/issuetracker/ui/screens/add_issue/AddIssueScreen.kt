@@ -14,11 +14,11 @@ import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.dominikwieczynski.issuetracker.R
 import com.dominikwieczynski.issuetracker.R.string as AppText
 import com.dominikwieczynski.issuetracker.common.composables.BasicButton
 import com.dominikwieczynski.issuetracker.common.composables.BasicField
@@ -26,6 +26,7 @@ import com.dominikwieczynski.issuetracker.common.composables.NavigationIconToolb
 import com.dominikwieczynski.issuetracker.common.extensions.basicButtonModifier
 import com.dominikwieczynski.issuetracker.common.extensions.fieldModifier
 import com.dominikwieczynski.issuetracker.common.extensions.spacer
+import com.dominikwieczynski.issuetracker.common.snackbar.SnackbarManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,18 +76,18 @@ fun AddIssueScreen(modifier: Modifier = Modifier, viewModel: AddIssueViewModel =
                 })
                 BasicButton(text = AppText.add, modifier = Modifier
                     .basicButtonModifier()
-                    .fillMaxWidth(), action = {
-                    if(viewModel.isLabelSelected())
-                    {
+                    .fillMaxWidth()
+                ) {
+                    if (viewModel.isLabelSelected()) {
                         viewModel.onAddPressed(projectId = projectId)
                         popUp()
+                    } else if (!viewModel.isLabelSelected()) {
+                        SnackbarManager.showMessage(AppText.please_select_a_label)
+                        // TODO: Add a shake animation when label is not selected and someone tries to add an issue?
+                        //
                     }
-                    else if(!viewModel.isLabelSelected())
-                    {
 
-                    }
-
-                })
+                }
 
 
             }

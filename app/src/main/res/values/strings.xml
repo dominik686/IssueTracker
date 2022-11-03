@@ -72,6 +72,7 @@
     <string name="enhancement">Enhancement</string>
     <string name="bug">Bug</string>
     <string name="type">Type</string>
+    <string name="please_select_a_label">Please select a label</string>
 
     <!-- Settings Screen -->
     <string name="settings">Settings</string>
